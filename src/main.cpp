@@ -7,6 +7,27 @@ using namespace web::http;             // Common HTTP functionality
 using namespace web::http::client;     // HTTP client features
 using namespace concurrency::streams;  // Asynchronous streams
 
+enum API { time, states };
+enum States {
+  icao24,
+  callsign,
+  origin_country,
+  time_position,
+  last_contact,
+  longitude,
+  latitude,
+  baro_altitude,
+  on_ground,
+  velocity,
+  true_track,
+  vertical_rate,
+  sensors,
+  geo_altitude,
+  squawk,
+  spi,
+  position_source
+};
+
 int main(int argc, char* argv[]) {
   auto fileStream = std::make_shared<ostream>();
 
