@@ -58,6 +58,9 @@ int main(int argc, char* argv[]) {
   .then([=](http_response response) {
     printf("Received response status code:%u\n", response.status_code());
 
+    // CHANGE: print the body
+    std::cout << response.body() << std::endl;
+
     // Write response body into the file.
     return response.body().read_to_end(fileStream->streambuf());
   })
