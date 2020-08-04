@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/**",
+                "/usr/local/Cellar/boost/1.73.0/include"
+            ],
+            "defines": [],
+            "macFrameworkPath": [],
+            "compilerPath": "/usr/local/bin/gcc-9",
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}
