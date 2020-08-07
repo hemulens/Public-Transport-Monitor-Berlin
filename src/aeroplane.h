@@ -3,8 +3,10 @@
 
 class Aeroplane {
   public:
+    // constructors:
     Aeroplane();
     Aeroplane(struct data); // change data type or change constructor
+    // getters/setters:
   private:
     std::string _icao24;
     std::string _callsign;

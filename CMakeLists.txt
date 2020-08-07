@@ -8,6 +8,8 @@ find_package(cpprestsdk REQUIRED)
 #find_package(openssl REQUIRED)
 #include(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/)
 
+file(GLOB project_SRCS src/*.cpp)
+
 # add the executable
 add_executable(AirTraffic src/main.cpp)
 
