@@ -1,13 +1,27 @@
+#ifndef AEROPLANE_H
+#define AEROPLANE_H
+
+
 #include <string>
 #include <vector>
+#include <iostream>
 
 class Aeroplane {
   public:
-    // constructors:
+    // Constructors:
     Aeroplane();
-    Aeroplane(struct data); // change data type or change constructor
-    // getters/setters:
+    // Aeroplane(int data); // change data type or change constructor
+    // Destructor
+    ~Aeroplane();
+    // Getters / setters:
+    int GetID();
+    int GetCounter();
+  protected:
+    // Counter
+    int _id;
+    static int _idCtr;  // global variable for counting object ids
   private:
+    // API data variables
     std::string _icao24;
     std::string _callsign;
     std::string _origin_country;
@@ -20,9 +34,12 @@ class Aeroplane {
     double _velocity;
     double _true_track;
     double _vertical_rate;
-    std::vector<int> _sensors;  // check after registering in the OpenSky Network!
+    std::vector<int> _sensors;  // check validity after registering in the OpenSky Network!
     double _geo_altitude;
     std::string _squawk;
     bool _spi;
     int _position_source;
 };
+
+
+#endif
