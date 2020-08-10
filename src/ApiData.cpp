@@ -21,6 +21,7 @@ pplx::task<void> Data::Request() {
     builder.append_query(U("lomax"), U(geo["lomax"]));
     return client.request(web::http::methods::GET, builder.to_string());
   })
+  // 
   // Handle response headers arriving
   .then([=](web::http::http_response response) {
     if (response.status_code() == web::http::status_codes::OK) {
