@@ -1,14 +1,9 @@
-#include <cpprest/http_client.h>
-#include <cpprest/json.h>  // casablanca's json parser
-// #include <string.h>
-// #include <xlocale.h>
-
-#include "ApiData.h"
-
 // #include <string>
 #include <vector>
 #include <map>
 #include <iostream>
+
+#include "ApiData.h"
 
 Data::Data() : _time(0) {}
 

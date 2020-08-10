@@ -1,10 +1,11 @@
 #ifndef AEROPLANE_H
 #define AEROPLANE_H
 
-
 #include <string>
 #include <vector>
 #include <iostream>
+
+#include "ApiData.cpp"
 
 class Aeroplane {
   public:
@@ -13,9 +14,11 @@ class Aeroplane {
     // Aeroplane(int data); // change data type or change constructor
     // Destructor
     ~Aeroplane();
-    // Getters / setters:
+    // Getters:
     int GetID();
     int GetCounter();
+    // Setters:
+    void Update(web::json::value &&planeData);
   protected:
     // Counter
     int _id;

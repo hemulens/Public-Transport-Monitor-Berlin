@@ -3,7 +3,7 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**",
+                "${workspaceFolder}/src",
                 "/usr/local/**",
                 "/usr/local/Cellar/boost/1.73.0/include"
             ],

@@ -8,6 +8,7 @@ add_executable(
   airtraffic 
   src/Controller.cpp
 )
+# add_executable(airtraffic ${project_SRCS})
 include_directories(src)
 
 find_package(cpprestsdk REQUIRED)
