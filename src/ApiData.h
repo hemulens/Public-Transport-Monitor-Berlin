@@ -76,4 +76,4 @@ class Data {
     web::json::value _states;
 };
 
-#endif
+#endif /* APIDATA_H */

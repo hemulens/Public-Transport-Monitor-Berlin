@@ -9,6 +9,7 @@ add_executable(
   src/Controller.cpp
 )
 # add_executable(airtraffic ${project_SRCS})
+# file(GLOB project_SRCS src/*.cpp) #src/*.h
 include_directories(src)
 
 find_package(cpprestsdk REQUIRED)

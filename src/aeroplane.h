@@ -11,14 +11,15 @@ class Aeroplane {
   public:
     // Constructors:
     Aeroplane();
-    // Aeroplane(int data); // change data type or change constructor
+    Aeroplane(int data, web::json::value planeData);
     // Destructor
     ~Aeroplane();
     // Getters:
     int GetID();
     int GetCounter();
+    std::string GetIcao();// experimental
     // Setters:
-    void Update(web::json::value &&planeData);
+    void Update(int time, web::json::value planeData);
   protected:
     // Counter
     int _id;
@@ -37,12 +38,14 @@ class Aeroplane {
     double _velocity;
     double _true_track;
     double _vertical_rate;
-    std::vector<int> _sensors;  // check validity after registering in the OpenSky Network!
+    web::json::value _sensors;  // check validity after registering in the OpenSky Network!
     double _geo_altitude;
     std::string _squawk;
     bool _spi;
     int _position_source;
+    // Time of the last update
+    int _updated_at;
 };
 
 
-#endif
+#endif /* AEROPLANE_H */
