@@ -7,10 +7,14 @@
 
 int main(int argc, char* argv[]) {
   Data data;
-  data.Fetch();
+  data.Init();
   std::cout << data.GetTime() << std::endl;
   std::cout << data.GetStates() << std::endl;
   std::cout << "***" << std::endl;
+  
+  // web::json::value::is_null() test
+  int i = 0;
+  std::cout << "geo_altitude of plane [i] = " << data.GetStates()[i][states::sensors].serialize() << std::endl;
 
   std::vector<std::unique_ptr<Aeroplane>> planes;
   for (int i = 0; i < data.GetStates().size(); i++) {

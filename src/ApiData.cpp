@@ -52,7 +52,7 @@ pplx::task<void> Data::Request() {
   // });
 }
 
-void Data::Fetch() {
+void Data::Init() {
   // Run requestTask and wait for all the outstanding I/O to complete and handle any exceptions
   // ADD WHILE LOOP
   try {

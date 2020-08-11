@@ -63,7 +63,7 @@ class Data {
     // Constructors
     Data();
     // Getters/setters
-    void Fetch();
+    void Init();
     pplx::task<void> Request();
     void UpdateData(web::json::value &data);
     int GetTime();

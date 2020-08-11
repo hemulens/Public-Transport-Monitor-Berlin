@@ -4,22 +4,60 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <type_traits>
 
 #include "ApiData.cpp"
+
+// Helper templates – parser and safeguard against "no conversion abort trap" when JSON data equals NULL
+// General template
+template <typename Type>
+void Assign(Type &variable, web::json::value data) {
+  variable = data;  // conversion for web::json::value
+}
+// Template specializations
+template <>
+void Assign(int &variable, web::json::value data) {
+  if (!data.is_null()) {
+    variable = stoi(data.serialize());
+  } else {
+    variable = 0;
+  }
+}
+template <>
+void Assign(double &variable, web::json::value data) {
+  if (!data.is_null()) {
+    variable = stod(data.serialize());
+  } else {
+    variable = 0.0;
+  }
+}
+template <>
+void Assign(std::string &variable, web::json::value data) {
+  variable = data.serialize();
+}
+// template <>
+// void Assign(bool &variable, web::json::value data) {
+//   if (!data.is_null()) {
+//     variable = stod(data.serialize());
+//   } else {
+//     variable = 0.0;
+//   }
+// }
+
 
 class Aeroplane {
   public:
     // Constructors:
     Aeroplane();
-    Aeroplane(int data, web::json::value planeData);
+    Aeroplane(int time, web::json::value planeData);
     // Destructor
     ~Aeroplane();
     // Getters:
     int GetID();
     int GetCounter();
-    std::string GetIcao();// experimental
+    std::string GetIcao();  // temporary 
     // Setters:
-    void Update(int time, web::json::value planeData);
+    void Update(int &time, web::json::value &planeData);
   protected:
     // Counter
     int _id;
