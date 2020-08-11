@@ -1,7 +1,40 @@
 #include "Aeroplane.h"
 
+// Templates to parse data and protect types against NULL
+template <typename Type>
+void Assign(Type &variable, web::json::value data) {
+  variable = data;  // conversion for web::json::value
+}
+// Template specializations
+template <>
+void Assign(int &variable, web::json::value data) {
+  if (!data.is_null()) {
+    variable = stoi(data.serialize());
+  } else {
+    variable = 0;
+  }
+}
+template <>
+void Assign(double &variable, web::json::value data) {
+  if (!data.is_null()) {
+    variable = stod(data.serialize());
+  } else {
+    variable = 0.0;
+  }
+}
+template <>
+void Assign(std::string &variable, web::json::value data) {
+  variable = data.serialize();
+}
+void Assign(bool &variable, web::json::value data) {
+  if (!data.is_null()) {
+    data.serialize() = "true" ? variable = true : variable = false;
+  } else {
+    variable = false;
+  }
+}
 
-// Init static variable
+// Initialize static Aeroplane counter
 int Aeroplane::_idCtr = 0;
 
 // Initialize object with default or null values
@@ -87,15 +120,15 @@ void Aeroplane::Update(int &time, web::json::value &planeData) {
   Assign(_longitude, planeData[states::longitude]);
   Assign(_latitude, planeData[states::latitude]);
   Assign(_baro_altitude, planeData[states::baro_altitude]);
-  _on_ground = true;  // add method
+  Assign(_on_ground, planeData[states::on_ground]);
   Assign(_velocity, planeData[states::velocity]);
   Assign(_true_track, planeData[states::true_track]);
   Assign(_vertical_rate, planeData[states::vertical_rate]);
   Assign(_sensors, planeData[states::sensors]);  // research what data is retrieved – so far null
-  _geo_altitude = stod(planeData[states::geo_altitude].serialize());
-  _squawk = planeData[states::squawk].serialize();
-  _spi = false;  // add method
-  _position_source = stoi(planeData[states::position_source].serialize());
+  Assign(_geo_altitude, planeData[states::geo_altitude]);
+  Assign(_squawk, planeData[states::squawk]);
+  Assign(_spi, planeData[states::spi]);
+  Assign(_position_source, planeData[states::position_source]);
   // Time of the last update
   _updated_at = time;
 

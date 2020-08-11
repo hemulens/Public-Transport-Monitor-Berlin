@@ -11,38 +11,16 @@
 // Helper templates – parser and safeguard against "no conversion abort trap" when JSON data equals NULL
 // General template
 template <typename Type>
-void Assign(Type &variable, web::json::value data) {
-  variable = data;  // conversion for web::json::value
-}
+void Assign(Type &variable, web::json::value data);
 // Template specializations
 template <>
-void Assign(int &variable, web::json::value data) {
-  if (!data.is_null()) {
-    variable = stoi(data.serialize());
-  } else {
-    variable = 0;
-  }
-}
+void Assign(int &variable, web::json::value data);
 template <>
-void Assign(double &variable, web::json::value data) {
-  if (!data.is_null()) {
-    variable = stod(data.serialize());
-  } else {
-    variable = 0.0;
-  }
-}
+void Assign(double &variable, web::json::value data);
 template <>
-void Assign(std::string &variable, web::json::value data) {
-  variable = data.serialize();
-}
-// template <>
-// void Assign(bool &variable, web::json::value data) {
-//   if (!data.is_null()) {
-//     variable = stod(data.serialize());
-//   } else {
-//     variable = 0.0;
-//   }
-// }
+void Assign(std::string &variable, web::json::value data);
+template <>
+void Assign(bool &variable, web::json::value data);
 
 
 class Aeroplane {
