@@ -8,30 +8,30 @@ void Assign(Type &variable, web::json::value data) {
 // Template specializations
 template <>
 void Assign(int &variable, web::json::value data) {
-  if (!data.is_null()) {
-    variable = stoi(data.serialize());
-  } else {
+  if (data.is_null()) {
     variable = 0;
+    return;
   }
+  variable = data.as_integer();
 }
 template <>
 void Assign(double &variable, web::json::value data) {
-  if (!data.is_null()) {
-    variable = stod(data.serialize());
-  } else {
+  if (data.is_null()) {
     variable = 0.0;
+    return;
   }
+  variable = data.as_double();
+}
+void Assign(bool &variable, web::json::value data) {
+  if (data.is_null()) {
+    variable = false;
+    return;
+  }
+  data.as_bool();
 }
 template <>
 void Assign(std::string &variable, web::json::value data) {
   variable = data.serialize();
-}
-void Assign(bool &variable, web::json::value data) {
-  if (!data.is_null()) {
-    data.serialize() = "true" ? variable = true : variable = false;
-  } else {
-    variable = false;
-  }
 }
 
 // Initialize static Aeroplane counter
@@ -46,14 +46,14 @@ Aeroplane::Aeroplane() : _icao24("undefined"),
                          _longitude(0.0), 
                          _latitude(0.0), 
                          _baro_altitude(0.0), 
-                         _on_ground(true),  // change
+                         _on_ground(false),  // change?
                          _velocity(0.0), 
                          _true_track(0.0), 
                          _vertical_rate(0.0), 
                          _sensors(),
                          _geo_altitude(0.0), 
                          _squawk("undefined"), 
-                         _spi(false),  // change 
+                         _spi(false),  // change?
                          _position_source(0),
                          _updated_at(0) {
   _id = _idCtr++;
