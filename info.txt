@@ -185,3 +185,23 @@ export CXX=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xc
 # include <string.h>
 # include <xlocale.h>
 #endif
+
+
+***
+
+API Key:
+
+Thank you for your interest in LTA's DataMall.
+
+The following API Account Key grants you access to all dynamic / real-time datasets in DataMall. For instructions on how to access the APIs and make use of the datasets, you may refer to the API User Guide here.
+
+API Account Key: 8lqoh/KKRcq9YbXKjf73mw==
+
+Please note that this API Account Key is uniquely assigned to you and is not to be shared with anyone else. You are to observe the terms and conditions stipulated herein the Singapore Open Data Licence, and API Terms of Service, as acknowledged in your application, and refrain from hyperlinking your products and services directly to DataMall. Lastly, please do not make API calls excessively as DataMall is a shared resource. Your usage will be monitored.
+
+Should you have any further queries, you may contact us at DataMall@lta.gov.sg.
+
+
+
+Cheers,
+LTA DataMall Team
