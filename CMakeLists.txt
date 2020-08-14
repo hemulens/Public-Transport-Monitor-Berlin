@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.9)
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
 
-project(Air-Traffic-Monitor VERSION 1.0)
+project(Public-Transport-Monitor VERSION 1.0)
 add_executable(
-  airtraffic 
+  BerlinTransport 
   src/Controller.cpp
 )
 # add_executable(airtraffic ${project_SRCS})
@@ -18,6 +18,6 @@ find_package(OpenSSL REQUIRED)
 
 #file(GLOB project_SRCS src/*.cpp)
 
-target_link_libraries(airtraffic PRIVATE cpprestsdk::cpprest)
+target_link_libraries(BerlinTransport PRIVATE cpprestsdk::cpprest)
 
-target_include_directories(airtraffic PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(BerlinTransport PUBLIC "${PROJECT_BINARY_DIR}")

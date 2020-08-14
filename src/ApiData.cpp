@@ -4,20 +4,31 @@
 
 #include "ApiData.h"
 
-Data::Data() : _time(0) {}
+Data::Data() : _time(std::chrono::system_clock::now()) {}
 
 pplx::task<void> Data::Request() {
   // Declare HTTP request:
   return pplx::create_task([=] {
-    // Create http_client to send the request
+    // Create http_client prior to sending a request
     web::http::client::http_client client(U(domain));
     // Build request URI and start the request
     web::http::uri_builder builder(U(path));
     // Append queries
-    builder.append_query(U("lamin"), U(geo["lamin"]));
-    builder.append_query(U("lomin"), U(geo["lomin"]));
-    builder.append_query(U("lamax"), U(geo["lamax"]));
-    builder.append_query(U("lomax"), U(geo["lomax"]));
+    builder.append_query(U("north"), U(geo["north"]));
+    builder.append_query(U("west"), U(geo["west"]));
+    builder.append_query(U("south"), U(geo["south"]));
+    builder.append_query(U("east"), U(geo["east"]));
+    // Set max number of vehicles in JSON
+    builder.append_query(U("results"), U(80));
+    // Set duration for computing frames
+    builder.append_query(U("duration"), U(0));
+    // Set max number of frames per vehicle
+    builder.append_query(U("frames"), U(0));
+    // Avoid subStops data
+    builder.append_query(U("subStops"), U(false));
+    // Avoid entrance data
+    builder.append_query(U("entrances"), U(false));
+    // Formulate request
     return client.request(web::http::methods::GET, builder.to_string());
   })
   // Handle response headers arriving
@@ -44,7 +55,7 @@ pplx::task<void> Data::Request() {
     // std::cout << "TIME: " << data["time"] << std::endl;
     // this->_states = data[api_data::states];
     // std::cout << data["states"][0][states::longitude] << std::endl;
-    this->UpdateData(data);
+    this->UpdateData(std::move(data));
     return;
   });
   // .then([](){
@@ -62,22 +73,25 @@ void Data::Init() {
   }  
 }
 
-void Data::UpdateData(web::json::value &data) {
-  int t = stoi(data["time"].serialize());
-  web::json::value st = data["states"];
-  if (_time != t) {
-    _time = t;
-    _states = st;
-    std::cout << "_time and _states updated" << std::endl;
-    return;
+void Data::UpdateData(web::json::value &&data) {
+  if (data.is_null()) {
+   std::cout << "_data NOT updated – 'data is NULL'" << std::endl;
+   return;
   }
-  std::cout << "_time and _states NOT updated" << std::endl;
+  _data = data;
+  _time = std::chrono::system_clock::now();
+  std::cout << "_data updated" << std::endl;
+  return;
 }
 
-int Data::GetTime() {
+std::chrono::system_clock::time_point Data::GetTime() {
   return _time;
 }
 
-web::json::value Data::GetStates() {
-  return _states;
+web::json::value Data::GetData() {
+  return _data;
+}
+
+web::json::value Data::GetData(const int index) {
+  return _data[index];
 }

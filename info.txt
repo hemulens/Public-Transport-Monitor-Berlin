@@ -138,6 +138,16 @@ Steps:
 + create aeroplane objects in a for loop based on parsed data using smart pointers
 + write data to an instance of the aeroplane object (smart pointer)
 + move an airoplane object to a std::vector<std::unique_ptr>
++ change project to Singapore public transport monitor
++ set geo coordinates: 
+  1) Berlin Tegel – 52.557396, 13.287704, Funkhaus Berlin Nalepastrasse – 52.483175, 13.505750  (link = https://v5.vbb.transport.rest/radar?north=52.557396&west=13.287704&south=52.483175&east=13.505750)
+  2) 52.525562, 13.348276 + 52.503455, 13.413168
++ test if request returns data
+- see what kind of vehicles are available:
+  - bus
+  - ubahn
+  - sbahn
+- set vehicle's direction – polylines (2 frames?)
 - refactor Controller.cpp
 - create while loop fetching data from the API every 5 seconds, parse the data received, update aeroplane objects, create new and delete old ones
 - message queue with request to each plane? ("https://opensky-network.org/api/states/all?time=1458564121&icao24=3c6444")
@@ -146,6 +156,7 @@ Steps:
   - Add (const &domain, const &geo) to Data() constructor
   - For loop for geo's members {builder.append_query}. Purpose: make constructor reusable for different API calls
   - Data::Fetch(): add a while loop
+  - Berlin: buses – GET /trips/:id; GET /radar
 
 
 

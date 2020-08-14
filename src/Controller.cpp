@@ -1,4 +1,4 @@
-#include "Aeroplane.cpp"
+#include "Vehicle.cpp"
 // #include "ApiData.cpp"
 
 #include <iostream>
@@ -6,21 +6,28 @@
 #include <memory>
 
 int main(int argc, char* argv[]) {
-  Data data;
-  data.Init();
-  std::cout << data.GetTime() << std::endl;
-  std::cout << data.GetStates() << std::endl;
+  // set timer
+  std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
+
+  std::shared_ptr<Data> data = std::make_shared<Data>();
+  data->Init();
+  // std::cout << data.GetData()[0] << std::endl;
+  std::cout << "Dataset size = " << data->GetData().size() << std::endl;
+  std::cout << "Time of update = " << std::chrono::system_clock::to_time_t(data->GetTime()) << std::endl;
   std::cout << "***" << std::endl;
   
-  // web::json::value::is_null() test
-  int i = 0;
-  std::cout << "geo_altitude of plane [i] = " << data.GetStates()[i][states::sensors].serialize() << std::endl;
+  // // web::json::value::is_null() test
+  // int i = 0;
+  // std::cout << "geo_altitude of plane [i] = " << data.GetStates()[i][states::sensors].serialize() << std::endl;
 
-  std::vector<std::unique_ptr<Aeroplane>> planes;
-  for (int i = 0; i < data.GetStates().size(); i++) {
-    std::unique_ptr<Aeroplane> p = std::make_unique<Aeroplane>(data.GetTime(), data.GetStates()[i]);
-    std::cout << "Plane's ICAO = " << p->GetIcao() << std::endl;
-    planes.emplace_back(std::move(p));
+  std::vector<std::unique_ptr<Vehicle>> allVehicles;
+  int jsonSize = data->GetData().size();
+  for (int i = 0; i < jsonSize; i++) {
+    // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>();  
+    // vehicle->Update(data->GetTime(), data->GetData(i));
+    std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(data->GetTime(), data->GetData(i));  
+    std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
+    allVehicles.emplace_back(std::move(vehicle));
   }
 
   // Experiment with deletion of NEW on the heap + deallocation of smart pointers
@@ -29,6 +36,13 @@ int main(int argc, char* argv[]) {
   // std::cout << "Aeroplane instance counter = " << aeroplane->GetCounter() << std::endl;
   // delete aeroplane2;
   // std::cout << "Aeroplane instance counter = " << aeroplane->GetCounter() << std::endl;
+
+  std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+
+  std::cout << "Speed of operation: " << duration << std::endl;
+
+  std::cout << "Trip ID = " << data->GetData()[0]["tripId"] << std::endl;
 
   return 0;
 }
