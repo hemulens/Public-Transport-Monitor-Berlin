@@ -21,15 +21,15 @@ const utility::string_t path{"/radar"};
 
 // Map coordinates:
 std::map<utility::string_t, double> geo {
-  // std::make_pair("north", 52.557396),
-  // std::make_pair("west", 13.287704),
-  // std::make_pair("south", 52.483175),
-  // std::make_pair("east", 13.505750)
+  std::make_pair("north", 52.557396),
+  std::make_pair("west", 13.287704),
+  std::make_pair("south", 52.483175),
+  std::make_pair("east", 13.505750)
   // Another experimental map set (smaller)
-  std::make_pair("north", 52.525562),
-  std::make_pair("west", 13.348276),
-  std::make_pair("south", 52.503455),
-  std::make_pair("east", 13.413168)
+  // std::make_pair("north", 52.525562),
+  // std::make_pair("west", 13.348276),
+  // std::make_pair("south", 52.503455),
+  // std::make_pair("east", 13.413168)
 }; 
 
 class Data {
@@ -38,10 +38,10 @@ class Data {
     Data();
     // Getters/setters
     void Fetch();
-    // pplx::task<void> RequestTask();
     void Update(web::json::value &&data);
     web::json::value GetData();
     web::json::value GetData(const int index);
+    int GetDataSize();
     std::chrono::system_clock::time_point GetTime();
   private:
     // HTTP variables

@@ -68,6 +68,7 @@ int Vehicle::GetVehicleCounter() {
 std::string Vehicle::GetTripID() {  // temporary 
   return _tripId;
 }
+
 void Vehicle::PrintInstance() {  // temporary 
   std::cout << "Vehicle id = " << _id << std::endl;
   std::cout << "_tripId = " << _tripId << std::endl;

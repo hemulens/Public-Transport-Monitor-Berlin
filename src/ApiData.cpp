@@ -75,3 +75,7 @@ web::json::value Data::GetData() {
 web::json::value Data::GetData(const int index) {
   return _data[index];
 }
+
+int Data::GetDataSize() {
+  return _data.size();
+};
