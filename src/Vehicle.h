@@ -35,6 +35,7 @@ class Vehicle {
     int GetVehicleID();
     int GetVehicleCounter();
     std::string GetTripID();  // temporary 
+    void PrintInstance();  // temporary
     // Setters:
     void Update(std::chrono::system_clock::time_point &time, web::json::value &data);
   protected:
@@ -44,11 +45,11 @@ class Vehicle {
   private:
     // API data variables
     std::string _tripId;
-    std::string _lineMode;
-    std::string _lineProduct;
-    bool _lineMetro;
-    double _locationLatitude; // create a vectore instead?
-    double _locationLongitude;
+    std::string _mode;  // line -> mode
+    std::string _product; // line -> product
+    bool _metro;  // line -> metro
+    double _latitude;  // location -> latitude
+    double _longitude;  // location -> longitude
     // Time of the last update
     std::chrono::system_clock::time_point _updatedAt;
 };

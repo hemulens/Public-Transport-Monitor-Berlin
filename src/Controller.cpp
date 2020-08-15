@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
   std::shared_ptr<Data> data = std::make_shared<Data>();
-  data->Init();
+  data->Fetch();
   // std::cout << data.GetData()[0] << std::endl;
   std::cout << "Dataset size = " << data->GetData().size() << std::endl;
   std::cout << "Time of update = " << std::chrono::system_clock::to_time_t(data->GetTime()) << std::endl;
@@ -26,7 +26,8 @@ int main(int argc, char* argv[]) {
     // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>();  
     // vehicle->Update(data->GetTime(), data->GetData(i));
     std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(data->GetTime(), data->GetData(i));  
-    std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
+    // std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
+    vehicle->PrintInstance();
     allVehicles.emplace_back(std::move(vehicle));
   }
 
