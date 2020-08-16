@@ -12,11 +12,12 @@ int main(int argc, char* argv[]) {
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
   std::shared_ptr<Data> data = std::make_shared<Data>();
-  std::vector<std::unique_ptr<Vehicle>> allVehicles;
+  std::vector<std::unique_ptr<Vehicle>> vehicles;
 
   int nData;
   int nVehicles;
   web::json::value d;
+  std::chrono::system_clock::time_point t;
 
   while (true) {
     data->Fetch();
@@ -24,20 +25,33 @@ int main(int argc, char* argv[]) {
     // std::cout << "Time of update = " << std::chrono::system_clock::to_time_t(data->GetTime()) << std::endl;
     // std::cout << "***" << std::endl;
     nData = data->GetDataSize();
-    nVehicles = allVehicles.size();
+    nVehicles = vehicles.size();
     d = data->GetData();
+    t = data->GetTime();
+
     // Update vehicles vector
     if (nVehicles > 0) {
-      for (int i = 0; i < nVehicles; ++i) {
+      for (int i = 0; i < nData; ++i) {
         // Find a vehicle with an ID of x
-        for (int j = 0; j < nData; ++j) {
-          if (allVehicles[i]->GetTripId() == d[j]["tripId"].as_string()) {
-            // allVehicles[j]->Update(data->GetTime(), data->GetData(i));
-            std::cout << "Vehicle " << allVehicles[i]->GetVehicleId() << " updated." << std::endl;
-          } else {
-            // std::cout << "I AM HERE!" << std::endl;
-          }
+        std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &v) {
+          return v->GetTripId() == d[i]["tripId"].as_string();
+        });
+        if (it == vehicles.end()) {
+          std::cout << "ERROR!!! = " << (it - vehicles.begin()) << std::endl;  // Data object does not exist in the vehicles vector 
         }
+        std::cout << "ITERATOR = " << (it - vehicles.begin()) << std::endl;
+        // std::cout << "OBJ ID (IT) = " << vehicles[it-vehicles.begin()]->GetTripId() << std::endl;
+
+        // for (int j = 0; j < vehicles.size(); ++j) {
+        //   // When equals obj i = obj j, update vehicle
+        //   if (d[i]["tripId"].as_string() == vehicles[j]->GetTripId()) {
+        //     web::json::value dI = data->GetData(i);
+        //     vehicles[j]->Update(t, dI);
+        //     std::cout << "VEHICLE " << vehicles[j]->GetVehicleId() << " UPDATED." << std::endl;
+        //     // add a mark to a special variable to NOT move (delete) this object from the vector?
+        //     break;
+        //   }
+        // }
       }
     // Create vehicles and push to vector
     } else {
@@ -47,7 +61,7 @@ int main(int argc, char* argv[]) {
         std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(data->GetTime(), data->GetData(i));  
         // std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
         vehicle->PrintInstance();
-        allVehicles.emplace_back(std::move(vehicle));
+        vehicles.emplace_back(std::move(vehicle));
       }
     }
     // std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find(allVehicles.begin(), allVehicles.end(), [](){});
@@ -56,9 +70,23 @@ int main(int argc, char* argv[]) {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     std::cout << "Speed of operation: " << duration << std::endl;
+    std::cout << "Vector size: " << vehicles.size() << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     t0 = std::chrono::high_resolution_clock::now();
   }
 
   return 0;
 }
+
+
+
+// for (int j = 0; j < vehicles.size(); ++j) {
+//   // When equals obj i = obj j, update vehicle
+//   if (d[i]["tripId"].as_string() == vehicles[j]->GetTripId()) {
+//     web::json::value dI = data->GetData(i);
+//     vehicles[j]->Update(t, dI);
+//     std::cout << "VEHICLE " << vehicles[j]->GetVehicleId() << " UPDATED." << std::endl;
+//     // add a mark to a special variable to NOT move (delete) this object from the vector?
+//     break;
+//   }
+// }
