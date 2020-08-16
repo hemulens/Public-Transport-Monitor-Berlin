@@ -31,9 +31,9 @@ int main(int argc, char* argv[]) {
       for (int i = 0; i < nVehicles; ++i) {
         // Find a vehicle with an ID of x
         for (int j = 0; j < nData; ++j) {
-          if (allVehicles[i]->GetTripID() == d[j]["tripId"].serialize()) {
+          if (allVehicles[i]->GetTripId() == d[j]["tripId"].as_string()) {
             // allVehicles[j]->Update(data->GetTime(), data->GetData(i));
-            std::cout << "Vehicle " << allVehicles[i]->GetVehicleID() << " updated." << std::endl;
+            std::cout << "Vehicle " << allVehicles[i]->GetVehicleId() << " updated." << std::endl;
           } else {
             // std::cout << "I AM HERE!" << std::endl;
           }

@@ -1,5 +1,4 @@
 // #include <vector>
-#include <map>
 #include <iostream>
 
 #include "ApiData.h"
@@ -7,7 +6,7 @@
 Data::Data() : _time(std::chrono::system_clock::now()),
                _client(U(domain)),  // Initialize http_client prior to sending a request – web::http::client::http_client _client(U(domain));
                _builder(U(path)) {  // Initialize request URI and start the request – web::http::uri_builder _builder(U(path));
-  // Append queries
+  // Append queries – more info: https://github.com/derhuerst/vbb-rest/blob/5/docs/api.md#get-radar
   _builder.append_query(U("north"), U(geo["north"]));
   _builder.append_query(U("west"), U(geo["west"]));
   _builder.append_query(U("south"), U(geo["south"]));
@@ -18,10 +17,6 @@ Data::Data() : _time(std::chrono::system_clock::now()),
   _builder.append_query(U("duration"), U(0));
   // Set max number of frames per vehicle
   _builder.append_query(U("frames"), U(0));
-  // Avoid subStops data
-  _builder.append_query(U("subStops"), U(false));
-  // Avoid entrance data
-  _builder.append_query(U("entrances"), U(false));
 }
 
 void Data::Fetch() {

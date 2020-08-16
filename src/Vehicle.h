@@ -6,11 +6,23 @@
 #include <iostream>
 #include <type_traits>
 #include <chrono>
+#include <map>
 
 #include "ApiData.cpp"
 
+// Enum of vehicle types – sorted according to VBB docs: https://github.com/public-transport/hafas-client/blob/5/docs/radar.md. See updated API structure here: https://v5.vbb.transport.rest/radar?north=52.557396&west=13.287704&south=52.483175&east=13.505750. Comments below reflect values for the keys "mode" and "product"
+enum VehicleType { 
+  null,           // no type (null)
+  bus,            // bus bus
+  tram,           // train tram
+  subwayTrain,    // train subway
+  suburbanTrain,  // train suburban
+  expressTrain,   // train express
+  regionalTrain   // train regional
+};
+
 // Helper templates – parser and safeguard against "no conversion abort trap" when JSON data equals NULL
-// General template
+// Generic template
 template <typename Type>
 void Assign(Type &variable, web::json::value &data);
 // Template specializations
@@ -22,6 +34,8 @@ template <>
 void Assign(std::string &variable, web::json::value &data);
 template <>
 void Assign(bool &variable, web::json::value &data);
+template <>
+void Assign(VehicleType &variable, web::json::value &data);
 
 
 class Vehicle {
@@ -32,26 +46,28 @@ class Vehicle {
     // Destructor
     ~Vehicle();
     // Getters:
-    int GetVehicleID();
+    int GetVehicleId();
     int GetVehicleCounter();
-    std::string GetTripID();  // temporary 
+    std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary
     // Setters:
     void Update(std::chrono::system_clock::time_point &time, web::json::value &data);
   protected:
-    // Counter
+    // ID counter
     int _id;
-    static int _idCtr;  // global variable for counting object ids
   private:
+    VehicleType _type;
     // API data variables
-    std::string _tripId;
-    std::string _mode;  // line -> mode
+    std::string _tripId;  // tripId
+    std::string _mode;    // line -> mode
     std::string _product; // line -> product
-    bool _metro;  // line -> metro
-    double _latitude;  // location -> latitude
-    double _longitude;  // location -> longitude
+    bool _metro;          // line -> metro
+    double _latitude;     // location -> latitude
+    double _longitude;    // location -> longitude
     // Time of the last update
     std::chrono::system_clock::time_point _updatedAt;
+    // Global ID counter (auxiliary)
+    static int _idCounter;  
 };
 
 

@@ -22,6 +22,7 @@ void Assign(double &variable, web::json::value &data) {
   }
   variable = data.as_double();
 }
+template <>
 void Assign(bool &variable, web::json::value &data) {
   if (data.is_null()) {
     variable = false;
@@ -31,16 +32,40 @@ void Assign(bool &variable, web::json::value &data) {
 }
 template <>
 void Assign(std::string &variable, web::json::value &data) {
-  variable = data.serialize();
+  variable = data.as_string();
+}
+template <>
+void Assign(VehicleType &variable, web::json::value &data) { 
+  // Temporary variables for the sake of DRY
+  std::string mode = data["mode"].as_string();  // See comments near enum VehicleType in Vehicle.h to understand what the keys "mode" and "product" describe
+  std::string product = data["product"].as_string();
+  if (mode == "bus") {
+    variable = VehicleType::bus;
+  } else if (mode == "train") {
+    if (product == "tram") {
+      variable = VehicleType::tram;
+    } else if (product == "subway") {
+      variable = VehicleType::subwayTrain;
+    } else if (product == "suburban") {
+      variable = VehicleType::suburbanTrain;
+    } else if (product == "express") {
+      variable = VehicleType::expressTrain;
+    } else if (product == "regional") {
+      variable = VehicleType::regionalTrain;
+    }
+  } else {
+    variable = VehicleType::null;
+  }
 }
 
 // Initialize static Vehicle counter
-int Vehicle::_idCtr = 0;
+int Vehicle::_idCounter = 0;
 
 // Initialize object with default or null values
-Vehicle::Vehicle() : _tripId("undefined"), 
+Vehicle::Vehicle() : _type(VehicleType::null),
+                     _tripId("null"), 
                      _updatedAt(std::chrono::system_clock::now()) {
-  _id = _idCtr++;
+  _id = _idCounter++;
   std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
@@ -48,29 +73,30 @@ Vehicle::Vehicle(std::chrono::system_clock::time_point time, web::json::value da
   // Set variables
   this->Update(time, data);
   // Update counter
-  _id = _idCtr++;
+  _id = _idCounter++;
   std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
 // Destructor
 Vehicle::~Vehicle() {
   // std::cout << "Vehicle " << _id << " deleted" << std::endl;
-  _id = _idCtr--;
+  _id = _idCounter--;
 }
 
 // Getters
-int Vehicle::GetVehicleID() {
+int Vehicle::GetVehicleId() {
   return _id;
 }
 int Vehicle::GetVehicleCounter() {
-  return _idCtr;
+  return _idCounter;
 }
-std::string Vehicle::GetTripID() {  // temporary 
+std::string Vehicle::GetTripId() {  // temporary 
   return _tripId;
 }
 
 void Vehicle::PrintInstance() {  // temporary 
-  std::cout << "Vehicle id = " << _id << std::endl;
+  std::cout << "_id = " << _id << std::endl;
+  std::cout << "_type = " << _type << std::endl;
   std::cout << "_tripId = " << _tripId << std::endl;
   std::cout << "_mode = " << _mode << std::endl;
   std::cout << "_product = " << _product << std::endl;
@@ -83,6 +109,8 @@ void Vehicle::PrintInstance() {  // temporary
 
 // Setters
 void Vehicle::Update(std::chrono::system_clock::time_point &time, web::json::value &data) {
+  // Vehicle type
+  Assign(_type, data["line"]);
   // API data variables
   Assign(_tripId, data["tripId"]);
   Assign(_mode, data["line"]["mode"]);
