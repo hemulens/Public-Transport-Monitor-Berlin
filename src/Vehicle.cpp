@@ -79,7 +79,7 @@ Vehicle::Vehicle(std::chrono::system_clock::time_point time, web::json::value da
 
 // Destructor
 Vehicle::~Vehicle() {
-  // std::cout << "Vehicle " << _id << " deleted" << std::endl;
+  std::cout << "Vehicle " << _id << " deleted" << std::endl;
   _id = _idCounter--;
 }
 
@@ -92,6 +92,9 @@ int Vehicle::GetVehicleCounter() {
 }
 std::string Vehicle::GetTripId() {  // temporary 
   return _tripId;
+}
+std::chrono::system_clock::time_point Vehicle::GetUpdateTime() {
+  return _updatedAt;
 }
 
 void Vehicle::PrintInstance() {  // temporary 

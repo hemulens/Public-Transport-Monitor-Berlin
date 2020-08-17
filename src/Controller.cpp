@@ -14,51 +14,53 @@ int main(int argc, char* argv[]) {
   std::shared_ptr<Data> data = std::make_shared<Data>();
   std::vector<std::unique_ptr<Vehicle>> vehicles;
 
-  int nData;
-  int nVehicles;
-  web::json::value d;
-  std::chrono::system_clock::time_point t;
+  int nData;  // size of data
+  web::json::value d;  // local copy of data (to speed up computations) (use std::move later)
+  std::chrono::system_clock::time_point t;  // time when data was received
 
   while (true) {
     data->Fetch();
-    // std::cout << "Dataset size = " << data->GetData().size() << std::endl;
-    // std::cout << "Time of update = " << std::chrono::system_clock::to_time_t(data->GetTime()) << std::endl;
-    // std::cout << "***" << std::endl;
-    nData = data->GetDataSize();
-    nVehicles = vehicles.size();
-    d = data->GetData();
+    d = std::move(data->GetData());
+    nData = d.size();
     t = data->GetTime();
 
     // Update vehicles vector
-    if (nVehicles > 0) {
+    if (vehicles.size() > 0) {
+      // Update or add vehicles
       for (int i = 0; i < nData; ++i) {
         // Find a vehicle with an ID of x
-        std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &v) {
-          return v->GetTripId() == d[i]["tripId"].as_string();
-        });
-        if (it == vehicles.end()) {
-          std::cout << "ERROR!!! = " << (it - vehicles.begin()) << std::endl;  // Data object does not exist in the vehicles vector 
+        std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &vehicle) {
+          return vehicle->GetTripId() == d[i]["tripId"].as_string();
+        }); 
+        // If data object exists in vehicles vector
+        if (it != vehicles.end()) {
+          // Update vehicle's data and add vehicle's index to an index vector
+          int vehicleIndex = it - vehicles.begin();
+          vehicles[vehicleIndex]->Update(t, d[i]);
+        } else {
+          // Create new vehicle based on the data object  
+          vehicles.emplace_back(std::move(std::make_unique<Vehicle>(t, d[i])));
         }
-        std::cout << "ITERATOR = " << (it - vehicles.begin()) << std::endl;
-        // std::cout << "OBJ ID (IT) = " << vehicles[it-vehicles.begin()]->GetTripId() << std::endl;
-
-        // for (int j = 0; j < vehicles.size(); ++j) {
-        //   // When equals obj i = obj j, update vehicle
-        //   if (d[i]["tripId"].as_string() == vehicles[j]->GetTripId()) {
-        //     web::json::value dI = data->GetData(i);
-        //     vehicles[j]->Update(t, dI);
-        //     std::cout << "VEHICLE " << vehicles[j]->GetVehicleId() << " UPDATED." << std::endl;
-        //     // add a mark to a special variable to NOT move (delete) this object from the vector?
-        //     break;
-        //   }
-        // }
+        // std::cout << "ITERATOR = " << (it - vehicles.begin()) << std::endl;  // delete later
+      }
+      // Delete vehicles that went out of map
+      // 1. Get indexes of vehicles to be deleted
+      std::vector<int> deleteIndex;
+      for (int i = 0; i < vehicles.size(); ++i) {
+        if (vehicles[i]->GetUpdateTime() != t) {
+          deleteIndex.push_back(i);
+        } 
+      }
+      // 2. Erase vehicle objects
+      for (int i = 0; i < deleteIndex.size(); ++i) {
+        vehicles.erase(vehicles.begin() + deleteIndex[i]);
       }
     // Create vehicles and push to vector
     } else {
       for (int i = 0; i < nData; ++i) {
         // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>();  
         // vehicle->Update(data->GetTime(), data->GetData(i));
-        std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(data->GetTime(), data->GetData(i));  
+        std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
         // std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
         vehicle->PrintInstance();
         vehicles.emplace_back(std::move(vehicle));
@@ -70,8 +72,9 @@ int main(int argc, char* argv[]) {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     std::cout << "Speed of operation: " << duration << std::endl;
-    std::cout << "Vector size: " << vehicles.size() << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+    std::cout << "Vehicles vector size: " << vehicles.size() << std::endl;
+    std::cout << "Data size: " << d.size() << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     t0 = std::chrono::high_resolution_clock::now();
   }
 

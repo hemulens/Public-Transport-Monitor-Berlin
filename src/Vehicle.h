@@ -48,6 +48,7 @@ class Vehicle {
     // Getters:
     int GetVehicleId();
     int GetVehicleCounter();
+    std::chrono::system_clock::time_point GetUpdateTime();
     std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary
     // Setters:
