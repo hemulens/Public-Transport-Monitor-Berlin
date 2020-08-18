@@ -42,13 +42,13 @@ class Data {
     web::json::value GetData();
     web::json::value GetData(const int index);
     int GetDataSize();
-    std::chrono::system_clock::time_point GetTime();
+    std::chrono::high_resolution_clock::time_point GetTime();
   private:
     // HTTP variables
     web::http::client::http_client _client;
     web::http::uri_builder _builder;
     // Data variables
-    std::chrono::system_clock::time_point _time;
+    std::chrono::high_resolution_clock::time_point _time;
     web::json::value _data;
 };
 

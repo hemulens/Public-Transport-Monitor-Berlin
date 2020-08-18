@@ -3,7 +3,7 @@
 
 #include "ApiData.h"
 
-Data::Data() : _time(std::chrono::system_clock::now()),
+Data::Data() : _time(std::chrono::high_resolution_clock::now()),
                _client(U(domain)),  // Initialize http_client prior to sending a request – web::http::client::http_client _client(U(domain));
                _builder(U(path)) {  // Initialize request URI and start the request – web::http::uri_builder _builder(U(path));
   // Append queries – more info: https://github.com/derhuerst/vbb-rest/blob/5/docs/api.md#get-radar
@@ -54,12 +54,12 @@ void Data::Update(web::json::value &&data) {
    return;
   }
   _data = data;
-  _time = std::chrono::system_clock::now();
+  _time = std::chrono::high_resolution_clock::now();
   std::cout << "_data updated" << std::endl;
   return;
 }
 
-std::chrono::system_clock::time_point Data::GetTime() {
+std::chrono::high_resolution_clock::time_point Data::GetTime() {
   return _time;
 }
 

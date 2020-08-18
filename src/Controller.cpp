@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 
   int nData;  // size of data
   web::json::value d;  // local copy of data (to speed up computations) (use std::move later)
-  std::chrono::system_clock::time_point t;  // time when data was received
+  std::chrono::high_resolution_clock::time_point t;  // time when data was received
 
   while (true) {
     data->Fetch();
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
       }
       // Delete vehicles that went out of map
       // 1. Get indexes of vehicles to be deleted
-      std::vector<int> deleteIndex;
+      std::vector<int> deleteIndex {};
       for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i]->GetUpdateTime() != t) {
           deleteIndex.push_back(i);
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
       }
       // 2. Erase vehicle objects
       for (int i = 0; i < deleteIndex.size(); ++i) {
-        vehicles.erase(vehicles.begin() + deleteIndex[i]);
+        vehicles.erase(vehicles.begin() + deleteIndex[i] - i);
       }
     // Create vehicles and push to vector
     } else {

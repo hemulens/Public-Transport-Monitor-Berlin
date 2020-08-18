@@ -64,12 +64,12 @@ int Vehicle::_idCounter = 0;
 // Initialize object with default or null values
 Vehicle::Vehicle() : _type(VehicleType::null),
                      _tripId("null"), 
-                     _updatedAt(std::chrono::system_clock::now()) {
+                     _updatedAt(std::chrono::high_resolution_clock::now()) {
   _id = _idCounter++;
   std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
-Vehicle::Vehicle(std::chrono::system_clock::time_point time, web::json::value data) {
+Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) {
   // Set variables
   this->Update(time, data);
   // Update counter
@@ -93,7 +93,7 @@ int Vehicle::GetVehicleCounter() {
 std::string Vehicle::GetTripId() {  // temporary 
   return _tripId;
 }
-std::chrono::system_clock::time_point Vehicle::GetUpdateTime() {
+std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
   return _updatedAt;
 }
 
@@ -106,12 +106,12 @@ void Vehicle::PrintInstance() {  // temporary
   std::cout << "_metro = " << _metro << std::endl;
   std::cout << "_latitude = " << _latitude << std::endl;
   std::cout << "_longitude = " << _longitude << std::endl;
-  std::cout << "_updatedAt = " << std::chrono::system_clock::to_time_t(_updatedAt) << std::endl;
+  // std::cout << "_updatedAt = " << std::chrono::system_clock::to_time_t(_updatedAt) << std::endl;
   std::cout << "***" << std::endl;
 }
 
 // Setters
-void Vehicle::Update(std::chrono::system_clock::time_point &time, web::json::value &data) {
+void Vehicle::Update(std::chrono::high_resolution_clock::time_point &time, web::json::value &data) {
   // Vehicle type
   Assign(_type, data["line"]);
   // API data variables
@@ -122,8 +122,6 @@ void Vehicle::Update(std::chrono::system_clock::time_point &time, web::json::val
   Assign(_latitude, data["location"]["latitude"]);
   Assign(_longitude, data["location"]["longitude"]);
   // Time of the last update
-  if (_updatedAt != time) {
-    _updatedAt = time;
-  }
+  _updatedAt = time;
 }
 

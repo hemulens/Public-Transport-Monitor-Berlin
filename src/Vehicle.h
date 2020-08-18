@@ -42,17 +42,17 @@ class Vehicle {
   public:
     // Constructors:
     Vehicle();
-    Vehicle(std::chrono::system_clock::time_point time, web::json::value data);
+    Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data);
     // Destructor
     ~Vehicle();
     // Getters:
     int GetVehicleId();
     int GetVehicleCounter();
-    std::chrono::system_clock::time_point GetUpdateTime();
+    std::chrono::high_resolution_clock::time_point GetUpdateTime();
     std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary
     // Setters:
-    void Update(std::chrono::system_clock::time_point &time, web::json::value &data);
+    void Update(std::chrono::high_resolution_clock::time_point &time, web::json::value &data);
   protected:
     // ID counter
     int _id;
@@ -66,7 +66,7 @@ class Vehicle {
     double _latitude;     // location -> latitude
     double _longitude;    // location -> longitude
     // Time of the last update
-    std::chrono::system_clock::time_point _updatedAt;
+    std::chrono::high_resolution_clock::time_point _updatedAt;
     // Global ID counter (auxiliary)
     static int _idCounter;  
 };
