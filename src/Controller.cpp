@@ -18,34 +18,52 @@ int main(int argc, char* argv[]) {
   web::json::value d;  // local copy of data (to speed up computations) (use std::move later)
   std::chrono::high_resolution_clock::time_point t;  // time when data was received
 
+  int updated;
+  int created;
+  int deleted;
+
   while (true) {
+    // Reset variables
     data->Fetch();
     d = std::move(data->GetData());
     nData = d.size();
     t = data->GetTime();
+    int updated = 0;
+    int created = 0;
+    int deleted = 0;
 
     // Update vehicles vector
     if (vehicles.size() > 0) {
       // Update or add vehicles
       for (int i = 0; i < nData; ++i) {
+        // TEST: count frequency
+        int freq = std::count_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &vehicle) {
+          return vehicle->GetTripId() == d[i]["tripId"].as_string();
+        });
+        if (freq > 1) {
+          std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
+        }
+        // EOF TEST
         // Find a vehicle with an ID of x
         std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &vehicle) {
           return vehicle->GetTripId() == d[i]["tripId"].as_string();
         }); 
-        // If data object exists in vehicles vector
+        // If found
         if (it != vehicles.end()) {
           // Update vehicle's data and add vehicle's index to an index vector
-          int vehicleIndex = it - vehicles.begin();
-          vehicles[vehicleIndex]->Update(t, d[i]);
+          vehicles[it - vehicles.begin()]->Update(t, d[i]);
+          updated++;
+        // If not found
         } else {
           // Create new vehicle based on the data object  
           vehicles.emplace_back(std::move(std::make_unique<Vehicle>(t, d[i])));
+          created++;
         }
         // std::cout << "ITERATOR = " << (it - vehicles.begin()) << std::endl;  // delete later
       }
       // Delete vehicles that went out of map
       // 1. Get indexes of vehicles to be deleted
-      std::vector<int> deleteIndex {};
+      std::vector<int> deleteIndex;;
       for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i]->GetUpdateTime() != t) {
           deleteIndex.push_back(i);
@@ -54,16 +72,16 @@ int main(int argc, char* argv[]) {
       // 2. Erase vehicle objects
       for (int i = 0; i < deleteIndex.size(); ++i) {
         vehicles.erase(vehicles.begin() + deleteIndex[i] - i);
+        deleted++;
       }
     // Create vehicles and push to vector
     } else {
       for (int i = 0; i < nData; ++i) {
-        // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>();  
-        // vehicle->Update(data->GetTime(), data->GetData(i));
         std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
         // std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
         vehicle->PrintInstance();
         vehicles.emplace_back(std::move(vehicle));
+        created++;
       }
     }
     // std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find(allVehicles.begin(), allVehicles.end(), [](){});
@@ -72,9 +90,13 @@ int main(int argc, char* argv[]) {
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     std::cout << "Speed of operation: " << duration << std::endl;
-    std::cout << "Vehicles vector size: " << vehicles.size() << std::endl;
+    std::cout << "Updated: " << updated << std::endl;
+    std::cout << "Created: " << created << std::endl;
+    std::cout << "Deleted: " << deleted << std::endl;
+    std::cout << "Vehicles size: " << vehicles.size() << std::endl;
     std::cout << "Data size: " << d.size() << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(600));
     t0 = std::chrono::high_resolution_clock::now();
   }
 

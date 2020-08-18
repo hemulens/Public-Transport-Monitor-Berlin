@@ -69,7 +69,7 @@ Vehicle::Vehicle() : _type(VehicleType::null),
   std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
-Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) {
+Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) : _updatedAt(time) {
   // Set variables
   this->Update(time, data);
   // Update counter
@@ -122,6 +122,8 @@ void Vehicle::Update(std::chrono::high_resolution_clock::time_point &time, web::
   Assign(_latitude, data["location"]["latitude"]);
   Assign(_longitude, data["location"]["longitude"]);
   // Time of the last update
-  _updatedAt = time;
+  if (_updatedAt != time) {
+    _updatedAt = time;
+  }
 }
 
