@@ -63,12 +63,20 @@ std::chrono::high_resolution_clock::time_point Data::GetTime() {
   return _time;
 }
 
+std::chrono::high_resolution_clock::time_point *Data::GetTimePtr() {
+  return &_time;
+}
+
 web::json::value Data::GetData() {
   return _data;
 }
 
 web::json::value Data::GetData(const int index) {
   return _data[index];
+}
+
+web::json::value *Data::GetDataPtr() {
+  return &_data;
 }
 
 int Data::GetDataSize() {

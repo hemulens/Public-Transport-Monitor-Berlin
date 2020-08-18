@@ -1,5 +1,5 @@
-#include "Vehicle.cpp"
-// #include "ApiData.cpp"
+#include "PublicTransport.cpp"
+// #include "Vehicle.cpp"
 
 #include <iostream>
 #include <vector>
@@ -56,12 +56,11 @@ int main(int argc, char* argv[]) {
         // If not found
         } else {
           // Create new vehicle based on the data object  
-          vehicles.emplace_back(std::move(std::make_unique<Vehicle>(t, d[i])));
+          vehicles.emplace_back(std::make_unique<Vehicle>(t, d[i]));
           created++;
         }
-        // std::cout << "ITERATOR = " << (it - vehicles.begin()) << std::endl;  // delete later
       }
-      // Delete vehicles that went out of map
+      // Delete vehicles that went out of map:
       // 1. Get indexes of vehicles to be deleted
       std::vector<int> deleteIndex;;
       for (int i = 0; i < vehicles.size(); ++i) {
@@ -77,10 +76,9 @@ int main(int argc, char* argv[]) {
     // Create vehicles and push to vector
     } else {
       for (int i = 0; i < nData; ++i) {
-        std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
-        // std::cout << "Vehicle's trip ID = " << vehicle->GetTripID() << std::endl;
-        vehicle->PrintInstance();
-        vehicles.emplace_back(std::move(vehicle));
+        // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
+        // vehicle->PrintInstance();
+        vehicles.emplace_back(std::make_unique<Vehicle>(t, d[i]));
         created++;
       }
     }
