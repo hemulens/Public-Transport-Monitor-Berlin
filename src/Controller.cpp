@@ -4,112 +4,16 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <algorithm>
-#include <thread>
+#include <chrono>
 
 int main(int argc, char* argv[]) {
   // set timer
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-
-  std::shared_ptr<Data> data = std::make_shared<Data>();
-  std::vector<std::unique_ptr<Vehicle>> vehicles;
-
-  int nData;  // size of data
-  web::json::value d;  // local copy of data (to speed up computations) (use std::move later)
-  std::chrono::high_resolution_clock::time_point t;  // time when data was received
-
-  int updated;
-  int created;
-  int deleted;
+  PublicTransport transport;
 
   while (true) {
-    // Reset variables
-    data->Fetch();
-    d = std::move(data->GetData());
-    nData = d.size();
-    t = data->GetTime();
-    int updated = 0;
-    int created = 0;
-    int deleted = 0;
-
-    // Update vehicles vector
-    if (vehicles.size() > 0) {
-      // Update or add vehicles
-      for (int i = 0; i < nData; ++i) {
-        // TEST: count frequency
-        int freq = std::count_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &vehicle) {
-          return vehicle->GetTripId() == d[i]["tripId"].as_string();
-        });
-        if (freq > 1) {
-          std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
-        }
-        // EOF TEST
-        // Find a vehicle with an ID of x
-        std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(vehicles.begin(), vehicles.end(), [&d, i] (std::unique_ptr<Vehicle> &vehicle) {
-          return vehicle->GetTripId() == d[i]["tripId"].as_string();
-        }); 
-        // If found
-        if (it != vehicles.end()) {
-          // Update vehicle's data and add vehicle's index to an index vector
-          vehicles[it - vehicles.begin()]->Update(t, d[i]);
-          updated++;
-        // If not found
-        } else {
-          // Create new vehicle based on the data object  
-          vehicles.emplace_back(std::make_unique<Vehicle>(t, d[i]));
-          created++;
-        }
-      }
-      // Delete vehicles that went out of map:
-      // 1. Get indexes of vehicles to be deleted
-      std::vector<int> deleteIndex;;
-      for (int i = 0; i < vehicles.size(); ++i) {
-        if (vehicles[i]->GetUpdateTime() != t) {
-          deleteIndex.push_back(i);
-        } 
-      }
-      // 2. Erase vehicle objects
-      for (int i = 0; i < deleteIndex.size(); ++i) {
-        vehicles.erase(vehicles.begin() + deleteIndex[i] - i);
-        deleted++;
-      }
-    // Create vehicles and push to vector
-    } else {
-      for (int i = 0; i < nData; ++i) {
-        // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
-        // vehicle->PrintInstance();
-        vehicles.emplace_back(std::make_unique<Vehicle>(t, d[i]));
-        created++;
-      }
-    }
-    // std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find(allVehicles.begin(), allVehicles.end(), [](){});
-
-    // Stop watch
-    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
-    std::cout << "Speed of operation: " << duration << std::endl;
-    std::cout << "Updated: " << updated << std::endl;
-    std::cout << "Created: " << created << std::endl;
-    std::cout << "Deleted: " << deleted << std::endl;
-    std::cout << "Vehicles size: " << vehicles.size() << std::endl;
-    std::cout << "Data size: " << d.size() << std::endl;
-    std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(600));
-    t0 = std::chrono::high_resolution_clock::now();
+    transport.Run();
   }
 
   return 0;
 }
-
-
-
-// for (int j = 0; j < vehicles.size(); ++j) {
-//   // When equals obj i = obj j, update vehicle
-//   if (d[i]["tripId"].as_string() == vehicles[j]->GetTripId()) {
-//     web::json::value dI = data->GetData(i);
-//     vehicles[j]->Update(t, dI);
-//     std::cout << "VEHICLE " << vehicles[j]->GetVehicleId() << " UPDATED." << std::endl;
-//     // add a mark to a special variable to NOT move (delete) this object from the vector?
-//     break;
-//   }
-// }

@@ -20,7 +20,7 @@ void PublicTransport::Run() {
     for (int i = 0; i < _apiOutput->size(); ++i) {
       // TEST: count frequency
       int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
-        return vehicle->GetTripId() == this->_apiOutput[i]["tripId"].as_string();
+        return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       });
       if (freq > 1) {
         std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
@@ -28,17 +28,17 @@ void PublicTransport::Run() {
       // EOF TEST
       // Find a vehicle with an ID of x
       std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
-        return vehicle->GetTripId() == _apiOutput[i]["tripId"].as_string();
+        return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       }); 
       // If found
       if (it != _vehicles.end()) {
         // Update vehicle's data and add vehicle's index to an index vector
-        _vehicles[it - _vehicles.begin()]->Update(*_updateTime, _apiOutput[i]);
+        _vehicles[it - _vehicles.begin()]->Update(*_updateTime, (*_apiOutput)[i]);
         _updated++;
       // If not found
       } else {
         // Create new vehicle based on the data object  
-        _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, _apiOutput[i]));
+        _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, (*_apiOutput)[i]));
         _created++;
       }
     }
@@ -60,7 +60,7 @@ void PublicTransport::Run() {
     for (int i = 0; i < _apiOutput->size(); ++i) {
       // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
       // vehicle->PrintInstance();
-      _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, _apiOutput[i]));
+      _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, (*_apiOutput)[i]));
       _created++;
     }
   }

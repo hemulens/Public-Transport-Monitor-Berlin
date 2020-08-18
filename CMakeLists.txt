@@ -8,7 +8,7 @@ add_executable(
   BerlinTransport 
   src/Controller.cpp
 )
-# add_executable(airtraffic ${project_SRCS})
+# add_executable(BerlinTransport ${project_SRCS})
 # file(GLOB project_SRCS src/*.cpp) #src/*.h
 include_directories(src)
 
