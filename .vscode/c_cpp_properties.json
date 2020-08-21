@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/src",
                 "/usr/local/**",
-                "/usr/local/Cellar/boost/1.73.0/include"
+                "/usr/local/Cellar/boost/1.73.0/include",
+                "/usr/local/include/opencv4/"
             ],
             "defines": [],
             "macFrameworkPath": [],
