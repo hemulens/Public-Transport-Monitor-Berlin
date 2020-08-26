@@ -97,6 +97,11 @@ std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
   return _updatedAt;
 }
 
+void Vehicle::GetPosition(double &lat, double &lon) {
+  lat = _latitude;
+  lon = _longitude;
+}
+
 void Vehicle::PrintInstance() {  // temporary 
   std::cout << "_id = " << _id << std::endl;
   std::cout << "_type = " << _type << std::endl;
@@ -108,6 +113,10 @@ void Vehicle::PrintInstance() {  // temporary
   std::cout << "_longitude = " << _longitude << std::endl;
   // std::cout << "_updatedAt = " << std::chrono::system_clock::to_time_t(_updatedAt) << std::endl;
   std::cout << "***" << std::endl;
+}
+
+VehicleType Vehicle::GetVehicleType() {
+  return _type;
 }
 
 // Setters

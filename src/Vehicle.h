@@ -48,6 +48,8 @@ class Vehicle {
     // Getters:
     int GetVehicleId();
     int GetVehicleCounter();
+    VehicleType GetVehicleType();
+    void GetPosition(double &lat, double &lon);
     std::chrono::high_resolution_clock::time_point GetUpdateTime();
     std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary

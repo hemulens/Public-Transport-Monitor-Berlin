@@ -6,6 +6,10 @@ PublicTransport::PublicTransport() : _data(std::make_shared<Data>()) {
   _updateTime = _data->GetTimePtr();
 }
 
+std::vector<std::unique_ptr<Vehicle>> *PublicTransport::GetVehiclesPtr() {
+  return &_vehicles;
+}
+
 
 void PublicTransport::Run() {
   // Reset variables
@@ -19,7 +23,7 @@ void PublicTransport::Run() {
   if (_vehicles.size() > 0) {
     // Update or add vehicles
     for (int i = 0; i < _apiOutput->size(); ++i) {
-      // TEST: count frequency
+      // Internal TEST: count frequency
       int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
         return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       });

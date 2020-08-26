@@ -12,6 +12,9 @@
 class PublicTransport {
   public:
     PublicTransport();
+    // Getters
+    std::vector<std::unique_ptr<Vehicle>> *GetVehiclesPtr();
+    // Setters
     void Run();
   private:
     std::shared_ptr<Data> _data;

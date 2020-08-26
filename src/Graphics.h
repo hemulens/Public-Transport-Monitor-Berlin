@@ -5,17 +5,15 @@
 #include <string>
 #include <vector>
 
+#include "PublicTransport.cpp"
+
 class Graphics {
  public:
   // constructor / desctructor
 
   // getters / setters
-  // void SetBgFilename(std::string filename) {
-  //   _bgFilename = filename;
-  // }
-  // void SetTrafficObjects(std::vector<std::shared_ptr<TrafficObject>> &trafficObjects) {
-  //   _trafficObjects = trafficObjects;
-  // };
+  void SetBgFilename(std::string filename);
+  void SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles);
 
   // typical behaviour methods
   void Simulate();
@@ -23,10 +21,10 @@ class Graphics {
  private:
   // typical behaviour methods
   void LoadBackgroundImg();
-  void DrawTrafficObjects();
+  void DrawVehicles();
 
   // member variables
-  // std::vector<std::shared_ptr<TrafficObject>> _trafficObjects;
+  std::vector<std::unique_ptr<Vehicle>> *_vehicles;
   std::string _bgFilename;
   std::string _windowName;
   std::vector<cv::UMat> _images;
