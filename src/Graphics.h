@@ -4,6 +4,7 @@
 #include <opencv2/core.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "PublicTransport.cpp"
 

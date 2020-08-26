@@ -12,6 +12,9 @@ void Graphics::SetBgFilename(std::string filename) {
 
 void Graphics::SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles) {
   _vehicles = vehicles;
+  // or 
+  // pass &transport
+  // _vehicles = transport.GetVehiclesPtr();
 }
 
 
