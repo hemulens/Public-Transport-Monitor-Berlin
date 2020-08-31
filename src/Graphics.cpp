@@ -18,16 +18,17 @@ void Graphics::SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles) {
 }
 
 
-void Graphics::Simulate() {
+void Graphics::Simulate(PublicTransport &transport) {
   this->LoadBackgroundImg();
   while (true) {
-    // sleep at every iteration to reduce CPU usage
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    // TODO: Wait for Request thread to finish fetching and parsing data (finishes by itself now)
 
-    // Wait for Request thread to finish fetching and parsing data
-
+    transport.Run();
     // update graphics
+    this->SetVehicles(transport.GetVehiclesPtr());
     this->DrawVehicles();
+    // sleep at every iteration to reduce CPU usage
+    // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
@@ -53,11 +54,8 @@ void Graphics::DrawVehicles() {
   for (auto &it : *_vehicles) {
     double latitude, longitude;
     it->GetPosition(latitude, longitude);
-
     // Set vehicle color according to its type
     if (it->GetVehicleType() == VehicleType::null) {
-      // cast object type from TrafficObject to Intersection
-      // std::shared_ptr<Intersection> intersection = std::dynamic_pointer_cast<Intersection>(it);
       cv::Scalar nullColor = cv::Scalar(0, 255, 0);  // green; red: cv::Scalar(0, 0, 255)
       cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 20, nullColor, -1);
     } else if (it->GetVehicleType() != VehicleType::null) {

@@ -17,7 +17,7 @@ class Graphics {
   void SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles);
 
   // typical behaviour methods
-  void Simulate();
+  void Simulate(PublicTransport &transport);
 
  private:
   // typical behaviour methods

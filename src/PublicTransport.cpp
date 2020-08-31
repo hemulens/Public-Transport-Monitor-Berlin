@@ -18,7 +18,7 @@ void PublicTransport::Run() {
   _created = 0;
   _deleted = 0;
 
-  // ADD MULTITHREADING HERE!
+  // TODO: Add multithreading here to save time parsing JSON!
   // Update vehicles vector
   if (_vehicles.size() > 0) {
     // Update or add vehicles
