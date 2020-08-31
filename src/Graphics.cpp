@@ -17,7 +17,6 @@ void Graphics::SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles) {
   // _vehicles = transport.GetVehiclesPtr();
 }
 
-
 void Graphics::Simulate(PublicTransport &transport) {
   this->LoadBackgroundImg();
   while (true) {
@@ -25,7 +24,7 @@ void Graphics::Simulate(PublicTransport &transport) {
 
     transport.Run();
     // update graphics
-    this->SetVehicles(transport.GetVehiclesPtr());
+    // this->SetVehicles(transport.GetVehiclesPtr());
     this->DrawVehicles();
     // sleep at every iteration to reduce CPU usage
     // std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -51,20 +50,22 @@ void Graphics::DrawVehicles() {
   _images.at(2) = _images.at(0).clone();
 
   // create overlay from all traffic objects
-  for (auto &it : *_vehicles) {
+  for (auto &v : *_vehicles) {
     double latitude, longitude;
-    it->GetPosition(latitude, longitude);
+    v->GetPosition(latitude, longitude);
+    NormalizeLatitude(latitude);
+    NormalizeLongitude(longitude);
     // Set vehicle color according to its type
-    if (it->GetVehicleType() == VehicleType::null) {
+    if (v->GetVehicleType() == VehicleType::null) {
       cv::Scalar nullColor = cv::Scalar(0, 255, 0);  // green; red: cv::Scalar(0, 0, 255)
       cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 20, nullColor, -1);
-    } else if (it->GetVehicleType() != VehicleType::null) {
-      cv::RNG rng(stoi(it->GetTripId()));
+    } else if (v->GetVehicleType() != VehicleType::null) {
+      cv::RNG rng(stoi(v->GetTripId()));
       int b = rng.uniform(0, 255);
       int g = rng.uniform(0, 255);
       int r = sqrt(255 * 255 - g * g - r * r);  // ensure that length of color vector is always 255
       cv::Scalar vehicleColor = cv::Scalar(b, g, r);
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 15, vehicleColor, -1);
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 35, vehicleColor, -1);
     }
   }
 
@@ -74,4 +75,11 @@ void Graphics::DrawVehicles() {
   // display background and overlay image
   cv::imshow(_windowName, _images.at(2));
   cv::waitKey(33);
+}
+
+void Graphics::NormalizeLatitude(double &latitude) {
+  latitude = (latitude - geo["west"]) / (geo["east"] - geo["west"]) * _resX;
+}
+void Graphics::NormalizeLongitude(double &longitude) {
+  longitude = (longitude - geo["south"]) / (geo["north"] - geo["south"]) * _resY;
 }

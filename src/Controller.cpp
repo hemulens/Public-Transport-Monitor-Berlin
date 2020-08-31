@@ -15,7 +15,7 @@ int main() {
   Graphics *graphics = new Graphics();
   graphics->SetBgFilename("../data/berlin-lg.png");
   PublicTransport publicTransport;
-  // graphics->SetVehicles(publicTransport.GetVehiclesPtr());
+  graphics->SetVehicles(publicTransport.GetVehiclesPtr());
   graphics->Simulate(publicTransport);
 
   // // set timer

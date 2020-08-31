@@ -15,6 +15,8 @@ class Graphics {
   // getters / setters
   void SetBgFilename(std::string filename);
   void SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles);
+  void NormalizeLatitude(double &latitude);
+  void NormalizeLongitude(double &longitude);
 
   // typical behaviour methods
   void Simulate(PublicTransport &transport);
@@ -29,6 +31,8 @@ class Graphics {
   std::string _bgFilename;
   std::string _windowName;
   std::vector<cv::UMat> _images;
+  int _resX{2880};
+  int _resY{1644};
 };
 
 #endif
