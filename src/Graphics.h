@@ -32,7 +32,7 @@ class Graphics {
   std::string _windowName;
   std::vector<cv::UMat> _images;
   int _resX{2880};
-  int _resY{1644};
+  int _resY{1642};
 };
 
 #endif

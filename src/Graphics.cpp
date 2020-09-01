@@ -51,21 +51,43 @@ void Graphics::DrawVehicles() {
 
   // create overlay from all traffic objects
   for (auto &v : *_vehicles) {
-    double latitude, longitude;
-    v->GetPosition(latitude, longitude);
-    NormalizeLatitude(latitude);
-    NormalizeLongitude(longitude);
+    double longitude, latitude;
+    v->GetNormalizedPosition(latitude, longitude, _resX, _resY);
     // Set vehicle color according to its type
     if (v->GetVehicleType() == VehicleType::null) {
+      std::cout << "Vehicle of type NULL!" << std::endl;  // Development test
       cv::Scalar nullColor = cv::Scalar(0, 255, 0);  // green; red: cv::Scalar(0, 0, 255)
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 20, nullColor, -1);
-    } else if (v->GetVehicleType() != VehicleType::null) {
-      cv::RNG rng(stoi(v->GetTripId()));
-      int b = rng.uniform(0, 255);
-      int g = rng.uniform(0, 255);
-      int r = sqrt(255 * 255 - g * g - r * r);  // ensure that length of color vector is always 255
-      cv::Scalar vehicleColor = cv::Scalar(b, g, r);
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 35, vehicleColor, -1);
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 50, nullColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::bus) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      // cv::RNG rng(stoi(v->GetTripId()));
+      // cv::RNG rng(2);
+      // int b = rng.uniform(0, 255);
+      // int g = rng.uniform(0, 255);
+      // int r = sqrt(255 * 255 - g * g - r * r);  // ensure that length of color vector is always 255
+      // cv::Scalar vehicleColor = cv::Scalar(b, g, r);
+      cv::Scalar vehicleColor = cv::Scalar(0, 128, 255);  // orange
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::tram) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      cv::Scalar vehicleColor = cv::Scalar(0, 0, 204);  // red
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::subwayTrain) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      cv::Scalar vehicleColor = cv::Scalar(128, 128, 128);  // grey
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      cv::Scalar vehicleColor = cv::Scalar(76, 153, 0);  // green
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::expressTrain) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      cv::Scalar vehicleColor = cv::Scalar(153, 76, 0);   // dark blue
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::regionalTrain) {
+      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+      cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  // purple
+      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
     }
   }
 
@@ -75,11 +97,4 @@ void Graphics::DrawVehicles() {
   // display background and overlay image
   cv::imshow(_windowName, _images.at(2));
   cv::waitKey(33);
-}
-
-void Graphics::NormalizeLatitude(double &latitude) {
-  latitude = (latitude - geo["west"]) / (geo["east"] - geo["west"]) * _resX;
-}
-void Graphics::NormalizeLongitude(double &longitude) {
-  longitude = (longitude - geo["south"]) / (geo["north"] - geo["south"]) * _resY;
 }

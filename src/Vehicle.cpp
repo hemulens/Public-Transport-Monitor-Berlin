@@ -58,6 +58,7 @@ void Assign(VehicleType &variable, web::json::value &data) {
   }
 }
 
+
 // Initialize static Vehicle counter
 int Vehicle::_idCounter = 0;
 
@@ -97,9 +98,18 @@ std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
   return _updatedAt;
 }
 
-void Vehicle::GetPosition(double &lat, double &lon) {
-  lat = _latitude;
-  lon = _longitude;
+
+// Geo position normalization
+void Vehicle::GetNormalizedPosition(double &lat, double &lon, int resX, int resY) {
+  lat = (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resX;
+  lon = (_longitude - geo["west"]) / (geo["east"] - geo["west"]) * resY;
+
+  // void Graphics::NormalizeLongitude(double &longitude) {
+  // longitude = (longitude - geo["west"]) / (geo["east"] - geo["west"]) * _resY;
+  // }
+  // void Graphics::NormalizeLatitude(double &latitude) {
+  //   latitude = (latitude - geo["south"]) / (geo["north"] - geo["south"]) * _resX;
+  // }
 }
 
 void Vehicle::PrintInstance() {  // temporary 
