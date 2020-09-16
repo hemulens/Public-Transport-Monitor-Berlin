@@ -21,15 +21,16 @@ const utility::string_t path{"/radar"};
 
 // Map coordinates:
 std::map<utility::string_t, double> geo {
-  std::make_pair("north", 52.557396),
-  std::make_pair("west", 13.287704),
-  std::make_pair("south", 52.483175),
-  std::make_pair("east", 13.505750)
-  // Another experimental map set (smaller)
-  // std::make_pair("north", 52.525562),
-  // std::make_pair("west", 13.348276),
-  // std::make_pair("south", 52.503455),
-  // std::make_pair("east", 13.413168)
+  // Experimental map set 1: https://www.google.com/maps/@52.5074075,13.3471116,14.41z
+  std::make_pair("north", 52.523554), 
+  std::make_pair("west", 13.300639),
+  std::make_pair("south", 52.491885),
+  std::make_pair("east", 13.393520)
+  // Experimental map set 2: https://www.google.com/maps/place/Berlin,+Germany/@52.5051999,13.3392366,16z/data=!4m5!3m4!1s0x47a84e373f035901:0x42120465b5e3b70!8m2!3d52.5200066!4d13.404954
+  // std::make_pair("north", 52.510535),
+  // std::make_pair("west", 13.323787),
+  // std::make_pair("south", 52.500034),
+  // std::make_pair("east", 13.354665)
 }; 
 
 class Data {

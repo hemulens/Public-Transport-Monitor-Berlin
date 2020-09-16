@@ -81,6 +81,6 @@ void PublicTransport::Run() {
   std::cout << "Vehicles size: " << _vehicles.size() << std::endl;
   std::cout << "Data size: " << _apiOutput->size() << std::endl;
   std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
-  std::this_thread::sleep_for(std::chrono::milliseconds(600));
+  std::this_thread::sleep_for(std::chrono::milliseconds(2000));
   // t0 = std::chrono::high_resolution_clock::now();
 }

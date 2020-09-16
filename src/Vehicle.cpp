@@ -101,8 +101,8 @@ std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
 
 // Geo position normalization
 void Vehicle::GetNormalizedPosition(double &lat, double &lon, int resX, int resY) {
-  lat = (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resX;
-  lon = (_longitude - geo["west"]) / (geo["east"] - geo["west"]) * resY;
+  lat = resY - (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resY;
+  lon = (_longitude - geo["west"]) / (geo["east"] - geo["west"]) * resX;
 
   // void Graphics::NormalizeLongitude(double &longitude) {
   // longitude = (longitude - geo["west"]) / (geo["east"] - geo["west"]) * _resY;

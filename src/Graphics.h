@@ -14,6 +14,7 @@ class Graphics {
 
   // getters / setters
   void SetBgFilename(std::string filename);
+  void SetBgSize(int x, int y);
   void SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles);
   void NormalizeLatitude(double &latitude);
   void NormalizeLongitude(double &longitude);
@@ -31,8 +32,8 @@ class Graphics {
   std::string _bgFilename;
   std::string _windowName;
   std::vector<cv::UMat> _images;
-  int _resX{2880};
-  int _resY{1642};
+  int _resX;
+  int _resY;
 };
 
 #endif

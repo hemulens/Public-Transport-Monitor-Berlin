@@ -12,11 +12,11 @@ Data::Data() : _time(std::chrono::high_resolution_clock::now()),
   _builder.append_query(U("south"), U(geo["south"]));
   _builder.append_query(U("east"), U(geo["east"]));
   // Set max number of vehicles in JSON
-  _builder.append_query(U("results"), U(700));
+  _builder.append_query(U("results"), U(1000));
   // Set duration for computing frames
-  _builder.append_query(U("duration"), U(0));
+  _builder.append_query(U("duration"), U(1));
   // Set max number of frames per vehicle
-  _builder.append_query(U("frames"), U(0));
+  // _builder.append_query(U("frames"), U(0));
 }
 
 void Data::Fetch() {

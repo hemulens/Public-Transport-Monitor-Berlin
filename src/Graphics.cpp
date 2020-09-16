@@ -10,6 +10,11 @@ void Graphics::SetBgFilename(std::string filename) {
   _bgFilename = filename;
 }
 
+void Graphics::SetBgSize(int x, int y) {
+  _resX = x;
+  _resY = y;
+}
+
 void Graphics::SetVehicles(std::vector<std::unique_ptr<Vehicle>> *vehicles) {
   _vehicles = vehicles;
   // or 
@@ -57,8 +62,8 @@ void Graphics::DrawVehicles() {
     if (v->GetVehicleType() == VehicleType::null) {
       std::cout << "Vehicle of type NULL!" << std::endl;  // Development test
       cv::Scalar nullColor = cv::Scalar(0, 255, 0);  // green; red: cv::Scalar(0, 0, 255)
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 50, nullColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::bus) {
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 50, nullColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::bus) {  // orange
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       // cv::RNG rng(stoi(v->GetTripId()));
       // cv::RNG rng(2);
@@ -66,28 +71,28 @@ void Graphics::DrawVehicles() {
       // int g = rng.uniform(0, 255);
       // int r = sqrt(255 * 255 - g * g - r * r);  // ensure that length of color vector is always 255
       // cv::Scalar vehicleColor = cv::Scalar(b, g, r);
-      cv::Scalar vehicleColor = cv::Scalar(0, 128, 255);  // orange
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::tram) {
+      cv::Scalar vehicleColor = cv::Scalar(0, 128, 255);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::tram) {  // red
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(0, 0, 204);  // red
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::subwayTrain) {
+      cv::Scalar vehicleColor = cv::Scalar(0, 0, 204);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // grey
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(128, 128, 128);  // grey
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {
+      cv::Scalar vehicleColor = cv::Scalar(128, 128, 128);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {  // green
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(76, 153, 0);  // green
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::expressTrain) {
+      cv::Scalar vehicleColor = cv::Scalar(76, 153, 0);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::expressTrain) {  // dark blue
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(153, 76, 0);   // dark blue
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::regionalTrain) {
+      cv::Scalar vehicleColor = cv::Scalar(153, 76, 0);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::regionalTrain) {  // purple
       std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  // purple
-      cv::circle(_images.at(1), cv::Point2d(latitude, longitude), 10, vehicleColor, -1);
+      cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     }
   }
 
