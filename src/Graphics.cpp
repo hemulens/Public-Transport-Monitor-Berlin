@@ -31,7 +31,7 @@ void Graphics::Simulate(PublicTransport &transport) {
     std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
     transport.Run();
     std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-    auto durationUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+    auto durationFetchAndUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     
     // update graphics
     // this->SetVehicles(transport.GetVehiclesPtr());
@@ -39,7 +39,7 @@ void Graphics::Simulate(PublicTransport &transport) {
     this->DrawVehicles();
     std::chrono::high_resolution_clock::time_point t3 = std::chrono::high_resolution_clock::now();
     auto durationDraw = std::chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count();
-    std::cout << "Updating finished after " << durationUpdate << " milliseconds" << std::endl;
+    std::cout << "Fetching + updating finished after " << durationFetchAndUpdate << " milliseconds" << std::endl;
     std::cout << "Drawing finished after " << durationDraw << " milliseconds" << std::endl;
     // sleep at every iteration (server returns real updates approx. once in 8-10 seconds)
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));

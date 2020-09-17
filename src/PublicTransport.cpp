@@ -18,6 +18,8 @@ void PublicTransport::Run() {
   _created = 0;
   _deleted = 0;
 
+  // Set timer
+  std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
   // TODO: Add multithreading here to save time parsing JSON!
   // Update vehicles vector
   if (_vehicles.size() > 0) {
@@ -73,13 +75,14 @@ void PublicTransport::Run() {
 
   // Stop watch
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-  // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
-  // std::cout << "Speed of operation: " << duration << std::endl;
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+  
   std::cout << "Updated: " << _updated << std::endl;
   std::cout << "Created: " << _created << std::endl;
   std::cout << "Deleted: " << _deleted << std::endl;
   std::cout << "Vehicles size: " << _vehicles.size() << std::endl;
   std::cout << "Data size: " << _apiOutput->size() << std::endl;
+  std::cout << "Updating finished after " << duration << " milliseconds" << std::endl;
   std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
   // t0 = std::chrono::high_resolution_clock::now();
 }
