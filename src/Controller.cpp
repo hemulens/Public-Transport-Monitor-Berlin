@@ -13,20 +13,14 @@
 int main() {
   // Draw all objects in vector
   Graphics *graphics = new Graphics();
-  // graphics->SetBgFilename("../data/berlin-sm-sat.jpg");
-  // graphics->SetBgSize(2400, 1347);
-  graphics->SetBgFilename("../data/berlin-lg-1.png"); 
-  graphics->SetBgSize(2880, 1624);
+  graphics->SetBgFilename("../data/berlin-xl-4.png"); 
+  graphics->SetBgSize(2880, 1620);
   PublicTransport publicTransport;
   graphics->SetVehicles(publicTransport.GetVehiclesPtr());
   graphics->Simulate(publicTransport);
 
-  // // set timer
+  // set timer
   // std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-
-  // while (true) {
-  //   publicTransport.Run();
-  // }
 
   return 0;
 }

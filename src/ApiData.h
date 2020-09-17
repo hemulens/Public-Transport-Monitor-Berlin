@@ -21,16 +21,26 @@ const utility::string_t path{"/radar"};
 
 // Map coordinates:
 std::map<utility::string_t, double> geo {
-  // Experimental map set 1: https://www.google.com/maps/@52.5074075,13.3471116,14.41z
-  std::make_pair("north", 52.523554), 
-  std::make_pair("west", 13.300639),
-  std::make_pair("south", 52.491885),
-  std::make_pair("east", 13.393520)
-  // Experimental map set 2: https://www.google.com/maps/place/Berlin,+Germany/@52.5051999,13.3392366,16z/data=!4m5!3m4!1s0x47a84e373f035901:0x42120465b5e3b70!8m2!3d52.5200066!4d13.404954
+  // Experimental map set 1: https://www.google.com/maps/place/Berlin,+Germany/@52.5051999,13.3392366,16z/data=!4m5!3m4!1s0x47a84e373f035901:0x42120465b5e3b70!8m2!3d52.5200066!4d13.404954
   // std::make_pair("north", 52.510535),
   // std::make_pair("west", 13.323787),
   // std::make_pair("south", 52.500034),
   // std::make_pair("east", 13.354665)
+  // Experimental map set 2: https://www.google.com/maps/@52.5074075,13.3471116,14.41z
+  // std::make_pair("north", 52.523554), 
+  // std::make_pair("west", 13.300639),
+  // std::make_pair("south", 52.491885),
+  // std::make_pair("east", 13.393520)
+  // Experimental map set 3: https://www.google.com/maps/@52.5360627,13.3619777,13.29z
+  // std::make_pair("north", 52.571106),
+  // std::make_pair("west", 13.260888),
+  // std::make_pair("south", 52.502273),
+  // std::make_pair("east", 13.462927)
+  // Experimental map set 4: https://www.google.com/maps/@52.5149363,13.4009202,12.76z
+  std::make_pair("north", 52.565727),
+  std::make_pair("west", 13.254447),
+  std::make_pair("south", 52.465946), 
+  std::make_pair("east", 13.546986)
 }; 
 
 class Data {
