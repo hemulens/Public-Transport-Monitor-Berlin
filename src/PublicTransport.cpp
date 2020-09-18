@@ -20,7 +20,8 @@ void PublicTransport::Run() {
 
   // Set timer
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-  // TODO: Add multithreading here to save time parsing JSON!
+  // TODO: Add multithreading here to save time parsing JSON! – will not work, as the dataset is too small
+  // TODO alternative: 
   // Update vehicles vector
   if (_vehicles.size() > 0) {
     // Update or add vehicles

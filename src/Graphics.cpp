@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <chrono>
+#include <string>
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -63,7 +64,6 @@ void Graphics::DrawVehicles() {
   // reset images
   _images.at(1) = _images.at(0).clone();
   _images.at(2) = _images.at(0).clone();
-
   // create overlay from all traffic objects
   for (auto &v : *_vehicles) {
     double longitude, latitude;
@@ -74,30 +74,25 @@ void Graphics::DrawVehicles() {
       cv::Scalar nullColor = cv::Scalar(0, 0, 0); 
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 50, nullColor, -1);
     } else if (v->GetVehicleType() == VehicleType::bus) {  // orange
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       cv::Scalar vehicleColor = cv::Scalar(0, 128, 255);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::tram) {  // red
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       cv::Scalar vehicleColor = cv::Scalar(0, 0, 204);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
-    } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // yellow
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
-      cv::Scalar vehicleColor = cv::Scalar(255, 222, 0);  
+    } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // blue
+      cv::Scalar vehicleColor = cv::Scalar(255, 153, 51);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {  // green
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       cv::Scalar vehicleColor = cv::Scalar(76, 153, 0);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::expressTrain) {  // dark blue
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       cv::Scalar vehicleColor = cv::Scalar(153, 76, 0);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::regionalTrain) {  // purple
-      std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
       cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     }
+    std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
   }
 
   float opacity = 0.95;
