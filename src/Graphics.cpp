@@ -92,7 +92,8 @@ void Graphics::DrawVehicles() {
       cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     }
-    std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
+    // Printing function used for debugging
+    // std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;
   }
 
   float opacity = 0.95;
