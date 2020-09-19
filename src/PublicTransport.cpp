@@ -83,7 +83,7 @@ void PublicTransport::Run() {
   std::cout << "Deleted: " << _deleted << std::endl;
   std::cout << "Vehicles size: " << _vehicles.size() << std::endl;
   std::cout << "Data size: " << _apiOutput->size() << std::endl;
-  std::cout << "Updating finished after " << duration << " milliseconds" << std::endl;
   std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
+  std::cout << duration << " milliseconds – updating" << std::endl;
   // t0 = std::chrono::high_resolution_clock::now();
 }

@@ -40,8 +40,8 @@ void Graphics::Simulate(PublicTransport &transport) {
     this->DrawVehicles();
     std::chrono::high_resolution_clock::time_point t3 = std::chrono::high_resolution_clock::now();
     auto durationDraw = std::chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count();
-    std::cout << "Fetching + updating finished after " << durationFetchAndUpdate << " milliseconds" << std::endl;
-    std::cout << "Drawing finished after " << durationDraw << " milliseconds" << std::endl;
+    std::cout << durationFetchAndUpdate << " milliseconds – fetching + updating" << std::endl;
+    std::cout << durationDraw << " milliseconds – drawing" << std::endl;
     // sleep at every iteration (server returns real updates approx. once in 8-10 seconds)
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
   }
@@ -67,30 +67,34 @@ void Graphics::DrawVehicles() {
   // create overlay from all traffic objects
   for (auto &v : *_vehicles) {
     double longitude, latitude;
-    v->GetNormalizedPosition(latitude, longitude, _resX, _resY);
+    v->GetNormalizedPosition(longitude, latitude, _resX, _resY);
     // Set vehicle color according to its type
+    cv::Scalar vehicleColor;
     if (v->GetVehicleType() == VehicleType::null) {  // black
-      std::cout << "Vehicle of type NULL!" << std::endl;  // Development test
-      cv::Scalar nullColor = cv::Scalar(0, 0, 0); 
-      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 50, nullColor, -1);
+      // std::cout << "Vehicle of type NULL! TripId = " << v->GetTripId() << std::endl;  // for debugging
+      vehicleColor = cv::Scalar(0, 0, 0); 
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 20, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::bus) {  // orange
-      cv::Scalar vehicleColor = cv::Scalar(0, 128, 255);  
+      vehicleColor = cv::Scalar(0, 128, 255);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::tram) {  // red
-      cv::Scalar vehicleColor = cv::Scalar(0, 0, 204);  
+      vehicleColor = cv::Scalar(0, 0, 204);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // blue
-      cv::Scalar vehicleColor = cv::Scalar(255, 153, 51);  
+      vehicleColor = cv::Scalar(255, 153, 51);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {  // green
-      cv::Scalar vehicleColor = cv::Scalar(76, 153, 0);  
+      vehicleColor = cv::Scalar(76, 153, 0);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::expressTrain) {  // dark blue
-      cv::Scalar vehicleColor = cv::Scalar(153, 76, 0);  
+      vehicleColor = cv::Scalar(153, 76, 0);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
     } else if (v->GetVehicleType() == VehicleType::regionalTrain) {  // purple
-      cv::Scalar vehicleColor = cv::Scalar(255, 0, 127);  
+      vehicleColor = cv::Scalar(255, 0, 127);  
       cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
+    } else if (v->GetVehicleType() == VehicleType::ferry) {  // brown
+      vehicleColor = cv::Scalar(0, 76, 153); 
+      cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 15, vehicleColor, -1);
     }
     // Printing function used for debugging
     // std::cout << "Vehicle type = " << v->GetVehicleType() << " id = " << v->GetTripId() << ": Lat = " << latitude << ", Long = " << longitude << std::endl;

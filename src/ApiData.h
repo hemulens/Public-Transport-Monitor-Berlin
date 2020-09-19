@@ -36,7 +36,7 @@ std::map<utility::string_t, double> geo {
   // std::make_pair("west", 13.260888),
   // std::make_pair("south", 52.502273),
   // std::make_pair("east", 13.462927)
-  // Experimental map set 4: https://www.google.com/maps/@52.5149363,13.4009202,12.76z
+  // Experimental map set 4: https://www.google.com/maps/dir/52.565727,+13.254447/52.465946,+13.546986/@52.5151224,13.4008417,12.75z/data=!4m9!4m8!1m3!2m2!1d13.254447!2d52.565727!1m3!2m2!1d13.546986!2d52.465946
   std::make_pair("north", 52.565727),
   std::make_pair("west", 13.254447),
   std::make_pair("south", 52.465946), 

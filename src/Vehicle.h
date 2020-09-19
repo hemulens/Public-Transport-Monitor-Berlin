@@ -18,7 +18,8 @@ enum VehicleType {
   subwayTrain,    // train subway
   suburbanTrain,  // train suburban
   expressTrain,   // train express
-  regionalTrain   // train regional
+  regionalTrain,   // train regional
+  ferry           // Mode = watercraft; Product = ferry
 };
 
 // Helper templates – parser and safeguard against "no conversion abort trap" when JSON data equals NULL
@@ -49,7 +50,7 @@ class Vehicle {
     int GetVehicleId();
     int GetVehicleCounter();
     VehicleType GetVehicleType();
-    void GetNormalizedPosition(double &lat, double &lon, int resX, int resY);  // Geo position normalization
+    void GetNormalizedPosition(double &lon, double &lat,  int resX, int resY);  // Geo position normalization
     std::chrono::high_resolution_clock::time_point GetUpdateTime();
     std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary

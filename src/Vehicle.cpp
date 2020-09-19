@@ -53,7 +53,12 @@ void Assign(VehicleType &variable, web::json::value &data) {
     } else if (product == "regional") {
       variable = VehicleType::regionalTrain;
     }
+  } else if (mode == "watercraft") {
+    if (product == "ferry") {
+      variable = VehicleType::ferry;
+    }  // other watercrafts (to be added)
   } else {
+    std::cout << "NULL vehcile! Mode = " << mode << "; Product = " << product << std::endl;  // for debugging
     variable = VehicleType::null;
   }
 }
@@ -100,8 +105,8 @@ std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
 
 
 // Geo position normalization
-void Vehicle::GetNormalizedPosition(double &lat, double &lon, int resX, int resY) {
-  lat = resY - (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resY;
+void Vehicle::GetNormalizedPosition(double &lon, double &lat, int resX, int resY) {
+  lat = resY - (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resY;  // In OpenCV, Y is computed counterclockwise
   lon = (_longitude - geo["west"]) / (geo["east"] - geo["west"]) * resX;
 
   // void Graphics::NormalizeLongitude(double &longitude) {
