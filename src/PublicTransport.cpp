@@ -18,22 +18,22 @@ void PublicTransport::Run() {
   _created = 0;
   _deleted = 0;
 
-  // Set timer
+  // Set timer (Updating)
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
   // TODO: Add multithreading here to save time parsing JSON! – will not work, as the dataset is too small
-  // TODO alternative: 
+  // TODO alternatives?
   // Update vehicles vector
   if (_vehicles.size() > 0) {
     // Update or add vehicles
     for (int i = 0; i < _apiOutput->size(); ++i) {
-      // Internal TEST: count frequency
-      int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
-        return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
-      });
-      if (freq > 1) {
-        std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
-      }
-      // EOF TEST
+      // // Internal TEST for debugging: count frequency to find repeated TripIDs
+      // int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
+      //   return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
+      // });
+      // if (freq > 1) {
+      //   std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
+      // }
+      // // EOF TEST
       // Find a vehicle with an ID of x
       std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
         return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
@@ -51,17 +51,12 @@ void PublicTransport::Run() {
       }
     }
     // Delete vehicles that went out of map:
-    // 1. Get indexes of vehicles to be deleted
-    std::vector<int> deleteIndex;;
-    for (int i = 0; i < _vehicles.size(); ++i) {
+    for (int i = 0; i < _vehicles.size(); ++i) {  // or use remove_if()
       if (_vehicles[i]->GetUpdateTime() != *_updateTime) {
-        deleteIndex.push_back(i);
+        _vehicles.erase(_vehicles.begin() + i);
+        _deleted++;
+        i--;
       } 
-    }
-    // 2. Erase vehicle objects
-    for (int i = 0; i < deleteIndex.size(); ++i) {
-      _vehicles.erase(_vehicles.begin() + deleteIndex[i] - i);
-      _deleted++;
     }
   // Create vehicles and push to vector
   } else {

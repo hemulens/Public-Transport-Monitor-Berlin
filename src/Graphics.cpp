@@ -65,11 +65,11 @@ void Graphics::DrawVehicles() {
   _images.at(1) = _images.at(0).clone();
   _images.at(2) = _images.at(0).clone();
   // create overlay from all traffic objects
+  double longitude, latitude;
+  cv::Scalar vehicleColor;
   for (auto &v : *_vehicles) {
-    double longitude, latitude;
     v->GetNormalizedPosition(longitude, latitude, _resX, _resY);
     // Set vehicle color according to its type
-    cv::Scalar vehicleColor;
     if (v->GetVehicleType() == VehicleType::null) {  // black
       // std::cout << "Vehicle of type NULL! TripId = " << v->GetTripId() << std::endl;  // for debugging
       vehicleColor = cv::Scalar(0, 0, 0); 
