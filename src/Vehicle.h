@@ -50,7 +50,7 @@ class Vehicle {
     int GetVehicleId();
     int GetVehicleCounter();
     VehicleType GetVehicleType();
-    void GetNormalizedPosition(double &lon, double &lat,  int resX, int resY);  // Geo position normalization
+    void GetNormalizedPosition(double &lon, double &lat, int resX, int resY);  // Geo position normalization
     std::chrono::high_resolution_clock::time_point GetUpdateTime();
     std::string GetTripId();  // temporary 
     void PrintInstance();  // temporary

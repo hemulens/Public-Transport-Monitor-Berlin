@@ -72,7 +72,7 @@ Vehicle::Vehicle() : _type(VehicleType::null),
                      _tripId("null"), 
                      _updatedAt(std::chrono::high_resolution_clock::now()) {
   _id = _idCounter++;
-  std::cout << "Vehicle " << _id << " created" << std::endl;
+  // std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
 Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) : _updatedAt(time) {
@@ -80,12 +80,12 @@ Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json:
   this->Update(time, data);
   // Update counter
   _id = _idCounter++;
-  std::cout << "Vehicle " << _id << " created" << std::endl;
+  // std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
 // Destructor
 Vehicle::~Vehicle() {
-  std::cout << "Vehicle " << _id << " deleted" << std::endl;
+  // std::cout << "Vehicle " << _id << " deleted" << std::endl;
   _id = _idCounter--;
 }
 
@@ -108,13 +108,6 @@ std::chrono::high_resolution_clock::time_point Vehicle::GetUpdateTime() {
 void Vehicle::GetNormalizedPosition(double &lon, double &lat, int resX, int resY) {
   lat = resY - (_latitude - geo["south"]) / (geo["north"] - geo["south"]) * resY;  // In OpenCV, Y is computed counterclockwise
   lon = (_longitude - geo["west"]) / (geo["east"] - geo["west"]) * resX;
-
-  // void Graphics::NormalizeLongitude(double &longitude) {
-  // longitude = (longitude - geo["west"]) / (geo["east"] - geo["west"]) * _resY;
-  // }
-  // void Graphics::NormalizeLatitude(double &latitude) {
-  //   latitude = (latitude - geo["south"]) / (geo["north"] - geo["south"]) * _resX;
-  // }
 }
 
 void Vehicle::PrintInstance() {  // temporary 

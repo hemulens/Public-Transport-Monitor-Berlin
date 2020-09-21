@@ -13,15 +13,12 @@ std::vector<std::unique_ptr<Vehicle>> *PublicTransport::GetVehiclesPtr() {
 
 void PublicTransport::Run() {
   // Reset variables
-  _data->Fetch();
+  _data->Fetch();  // There are two separate stopwatches inside this function
+  // Init stopwatch (updating vehicles)
+  std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
   _updated = 0;
   _created = 0;
   _deleted = 0;
-
-  // Set timer (Updating)
-  std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-  // TODO: Add multithreading here to save time parsing JSON! – will not work, as the dataset is too small
-  // TODO alternatives?
   // Update vehicles vector
   if (_vehicles.size() > 0) {
     // Update or add vehicles
@@ -69,7 +66,7 @@ void PublicTransport::Run() {
   }
   // std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find(allVehicles.begin(), allVehicles.end(), [](){});
 
-  // Stop watch
+  // End stopwatch
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
   
@@ -78,7 +75,7 @@ void PublicTransport::Run() {
   std::cout << "Deleted: " << _deleted << std::endl;
   std::cout << "Vehicles size: " << _vehicles.size() << std::endl;
   std::cout << "Data size: " << _apiOutput->size() << std::endl;
-  std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
-  std::cout << duration << " milliseconds – updating" << std::endl;
+  std::cout << "*-*-*" << std::endl;
+  std::cout << duration << " milliseconds – updating vehicles" << std::endl;
   // t0 = std::chrono::high_resolution_clock::now();
 }

@@ -49,7 +49,7 @@ class Data {
     Data();
     // Getters/setters
     void Fetch();
-    void Update(web::json::value &&data);
+    void Update(const web::json::value &&data);
     web::json::value GetData();
     web::json::value GetData(const int index);
     web::json::value *GetDataPtr();

@@ -14,13 +14,15 @@ Data::Data() : _time(std::chrono::high_resolution_clock::now()),
   // Set max number of vehicles in JSON
   _builder.append_query(U("results"), U(1000));
   // Set duration for computing frames
-  _builder.append_query(U("duration"), U(1));
+  // _builder.append_query(U("duration"), U(1));
   // Set max number of frames per vehicle
   // _builder.append_query(U("frames"), U(0));
 }
 
 void Data::Fetch() {
   // Run requestTask and wait for all the outstanding I/O to complete and handle any exceptions
+  // Init stopwatch (data fetching)
+  std::chrono::high_resolution_clock::time_point t0_fetch = std::chrono::high_resolution_clock::now();
   try {
     // RequestTask().wait();
     pplx::create_task([=] {
@@ -33,10 +35,21 @@ void Data::Fetch() {
       // Response body -> return json
       return response.extract_json();
     })
-    .then([this](web::json::value data){
+    .then([this, t0_fetch](web::json::value data){
+      // End stopwatch (fetching)
+      std::chrono::high_resolution_clock::time_point t1_fetch = std::chrono::high_resolution_clock::now();
+      auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1_fetch - t0_fetch).count();
+      std::cout << duration << " milliseconds – fetching data" << std::endl;
       // Parse json object
+      // Init stopwatch ()
+      std::chrono::high_resolution_clock::time_point t0_update = std::chrono::high_resolution_clock::now();
       if (!data.is_null()) {
-        this->Update(std::move(data));
+        this->Update(std::move(data));  // JSON for 500 vehicles weighs approx. 3.2 MB 😱
+        // End stopwatch (fetching)
+        std::chrono::high_resolution_clock::time_point t1_update = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1_update - t0_update).count();
+        std::cout << duration << " milliseconds – updating data" << std::endl;
+        std::cout << "*-*-*" << std::endl;
         return;
       }
       std::cout << "Data unavailable: returned emply JSON" << std::endl;  // throw exception instead
@@ -48,14 +61,10 @@ void Data::Fetch() {
   }  
 }
 
-void Data::Update(web::json::value &&data) {
-  if (data.is_null()) {
-   std::cout << "_data NOT updated – 'data is NULL'" << std::endl;
-   return;
-  }
+void Data::Update(const web::json::value &&data) {
   _data = data;
   _time = std::chrono::high_resolution_clock::now();
-  std::cout << "_data updated" << std::endl;
+  // std::cout << "_data updated" << std::endl;
   return;
 }
 
