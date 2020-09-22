@@ -26,6 +26,7 @@ class Graphics {
   // typical behaviour methods
   void LoadBackgroundImg();
   void DrawVehicles();
+  void DrawVehicle(std::unique_ptr<Vehicle> &v, double &lo, double &la);
 
   // member variables
   std::vector<std::unique_ptr<Vehicle>> *_vehicles;

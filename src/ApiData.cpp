@@ -62,7 +62,7 @@ void Data::Fetch() {
 }
 
 void Data::Update(const web::json::value &&data) {
-  _data = data;
+  _data = std::move(data);
   _time = std::chrono::high_resolution_clock::now();
   // std::cout << "_data updated" << std::endl;
   return;
