@@ -11,7 +11,7 @@ std::vector<std::unique_ptr<Vehicle>> *PublicTransport::GetVehiclesPtr() {
 }
 
 void PublicTransport::Run() {
-  // Reset variables
+  // Send request and reset data
   _data->Fetch();  // There are two separate stopwatches inside this function
   // Init stopwatch (updating vehicles)
   std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
@@ -31,7 +31,7 @@ void PublicTransport::Run() {
       // }
       // // EOF TEST
       // Find a vehicle with an ID of x
-      std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
+      std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find_if(_vehicles.begin(), _vehicles.end(), [this, i](std::unique_ptr<Vehicle> &vehicle){
         return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       }); 
       // If found

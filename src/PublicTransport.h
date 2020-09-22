@@ -1,13 +1,13 @@
 #ifndef PUBLICTRANSPORT_H
 #define PUBLICTRANSPORT_H
 
-#include "Vehicle.cpp"
-
 #include <vector>
 #include <memory>
 #include <chrono>
 #include <thread>
 #include <iostream>
+
+#include "Vehicle.cpp"
 
 class PublicTransport {
   public:
