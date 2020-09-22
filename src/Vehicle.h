@@ -10,16 +10,18 @@
 
 #include "ApiData.cpp"
 
-// Enum of vehicle types – sorted according to VBB docs: https://github.com/public-transport/hafas-client/blob/5/docs/radar.md. See updated API structure here: https://v5.vbb.transport.rest/radar?north=52.557396&west=13.287704&south=52.483175&east=13.505750. Comments below reflect values for the keys "mode" and "product"
+// Enum of vehicle types – sorted according to VBB docs: https://github.com/public-transport/hafas-client/blob/5/docs/radar.md. 
+// See updated API structure here: https://v5.vbb.transport.rest/radar?north=52.557396&west=13.287704&south=52.483175&east=13.505750. 
+// Comments below reflect values for the keys "mode" and "product"
 enum VehicleType { 
-  null,           // no type (null)
+  null,           // no type (null) - precaution against types uncaptured in the enum
   bus,            // bus bus
   tram,           // train tram
   subwayTrain,    // train subway
   suburbanTrain,  // train suburban
   expressTrain,   // train express
-  regionalTrain,   // train regional
-  ferry           // Mode = watercraft; Product = ferry
+  regionalTrain,  // train regional
+  ferry           // watercraft ferry
 };
 
 // Helper templates – parser and safeguard against "no conversion abort trap" when JSON data equals NULL

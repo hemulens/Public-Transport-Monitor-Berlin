@@ -1,4 +1,3 @@
-// #include <vector>
 #include <iostream>
 
 #include "ApiData.h"
@@ -6,13 +5,14 @@
 Data::Data() : _time(std::chrono::high_resolution_clock::now()),
                _client(U(domain)),  // Initialize http_client prior to sending a request – web::http::client::http_client _client(U(domain));
                _builder(U(path)) {  // Initialize request URI and start the request – web::http::uri_builder _builder(U(path));
-  // Append queries – more info: https://github.com/derhuerst/vbb-rest/blob/5/docs/api.md#get-radar
+  // Append queries – more info about queries: https://github.com/derhuerst/vbb-rest/blob/5/docs/api.md#get-radar
   _builder.append_query(U("north"), U(geo["north"]));
   _builder.append_query(U("west"), U(geo["west"]));
   _builder.append_query(U("south"), U(geo["south"]));
   _builder.append_query(U("east"), U(geo["east"]));
   // Set max number of vehicles in JSON
   _builder.append_query(U("results"), U(1000));
+  // Additional useful queries – currently not used
   // Set duration for computing frames
   // _builder.append_query(U("duration"), U(1));
   // Set max number of frames per vehicle
@@ -21,7 +21,7 @@ Data::Data() : _time(std::chrono::high_resolution_clock::now()),
 
 void Data::Fetch() {
   // Run requestTask and wait for all the outstanding I/O to complete and handle any exceptions
-  // Init stopwatch (data fetching)
+  // Init stopwatch (fetching)
   std::chrono::high_resolution_clock::time_point t0_fetch = std::chrono::high_resolution_clock::now();
   try {
     // RequestTask().wait();
@@ -41,11 +41,11 @@ void Data::Fetch() {
       auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1_fetch - t0_fetch).count();
       std::cout << duration << " milliseconds – fetching data" << std::endl;
       // Parse json object
-      // Init stopwatch ()
+      // Init stopwatch (updating)
       std::chrono::high_resolution_clock::time_point t0_update = std::chrono::high_resolution_clock::now();
       if (!data.is_null()) {
         this->Update(std::move(data));  // JSON for 500 vehicles weighs approx. 3.2 MB 😱
-        // End stopwatch (fetching)
+        // End stopwatch (updating)
         std::chrono::high_resolution_clock::time_point t1_update = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1_update - t0_update).count();
         std::cout << duration << " milliseconds – updating data" << std::endl;

@@ -10,7 +10,6 @@ std::vector<std::unique_ptr<Vehicle>> *PublicTransport::GetVehiclesPtr() {
   return &_vehicles;
 }
 
-
 void PublicTransport::Run() {
   // Reset variables
   _data->Fetch();  // There are two separate stopwatches inside this function
@@ -23,7 +22,7 @@ void PublicTransport::Run() {
   if (_vehicles.size() > 0) {
     // Update or add vehicles
     for (int i = 0; i < _apiOutput->size(); ++i) {
-      // // Internal TEST for debugging: count frequency to find repeated TripIDs
+      // // Internal TEST for debugging: count frequency to find repeated TripIDs (requires over 60 milliseconds on dataset i = 500)
       // int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
       //   return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       // });
@@ -39,32 +38,29 @@ void PublicTransport::Run() {
       if (it != _vehicles.end()) {
         // Update vehicle's data and add vehicle's index to an index vector
         _vehicles[it - _vehicles.begin()]->Update(*_updateTime, (*_apiOutput)[i]);
-        _updated++;
+        ++_updated;
       // If not found
       } else {
         // Create new vehicle based on the data object  
         _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, (*_apiOutput)[i]));
-        _created++;
+        ++_created;
       }
     }
     // Delete vehicles that went out of map:
     for (int i = 0; i < _vehicles.size(); ++i) {  // or use remove_if()
       if (_vehicles[i]->GetUpdateTime() != *_updateTime) {
         _vehicles.erase(_vehicles.begin() + i);
-        _deleted++;
-        i--;
+        ++_deleted;
+        --i;
       } 
     }
   // Create vehicles and push to vector
   } else {
     for (int i = 0; i < _apiOutput->size(); ++i) {
-      // std::unique_ptr<Vehicle> vehicle = std::make_unique<Vehicle>(t, d[i]);  
-      // vehicle->PrintInstance();
       _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, (*_apiOutput)[i]));
-      _created++;
+      ++_created;
     }
   }
-  // std::vector<std::unique_ptr<Vehicle>>::iterator it = std::find(allVehicles.begin(), allVehicles.end(), [](){});
 
   // End stopwatch
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -77,5 +73,4 @@ void PublicTransport::Run() {
   std::cout << "Data size: " << _apiOutput->size() << std::endl;
   std::cout << "*-*-*" << std::endl;
   std::cout << duration << " milliseconds – updating vehicles" << std::endl;
-  // t0 = std::chrono::high_resolution_clock::now();
 }

@@ -71,7 +71,7 @@ int Vehicle::_idCounter = 0;
 Vehicle::Vehicle() : _type(VehicleType::null),
                      _tripId("null"), 
                      _updatedAt(std::chrono::high_resolution_clock::now()) {
-  _id = _idCounter++;
+  _id = ++_idCounter;
   // std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
@@ -79,14 +79,14 @@ Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json:
   // Set variables
   this->Update(time, data);
   // Update counter
-  _id = _idCounter++;
+  _id = ++_idCounter;
   // std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
 // Destructor
 Vehicle::~Vehicle() {
   // std::cout << "Vehicle " << _id << " deleted" << std::endl;
-  _id = _idCounter--;
+  _id = --_idCounter;
 }
 
 // Getters

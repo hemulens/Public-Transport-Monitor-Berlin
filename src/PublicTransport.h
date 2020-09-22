@@ -14,12 +14,12 @@ class PublicTransport {
     PublicTransport();
     // Getters
     std::vector<std::unique_ptr<Vehicle>> *GetVehiclesPtr();
-    // Behavior
+    // Behavioral methods
     void Run();
   private:
     std::shared_ptr<Data> _data;
-    web::json::value *_apiOutput;
-    std::chrono::high_resolution_clock::time_point *_updateTime;
+    web::json::value *_apiOutput;  // Raw pointer used instead of smart pointer on purpose
+    std::chrono::high_resolution_clock::time_point *_updateTime;  // Raw pointer used instead of smart pointer on purpose
     std::vector<std::unique_ptr<Vehicle>> _vehicles;
     // Counters for internal checkup of data validity
     int _updated;

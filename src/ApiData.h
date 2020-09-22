@@ -21,6 +21,7 @@ const utility::string_t path{"/radar"};
 
 // Map coordinates:
 std::map<utility::string_t, double> geo {
+  // To use other maps, please 1) choose and uncomment any desired coordinate sets, 2) in Controller.cpp change the file name and img resolution. Example: map set 2 requires img file "berlin-md-2.jpg" with resolution 2880 × 1624 px
   // Experimental map set 1: https://www.google.com/maps/place/Berlin,+Germany/@52.5051999,13.3392366,16z/data=!4m5!3m4!1s0x47a84e373f035901:0x42120465b5e3b70!8m2!3d52.5200066!4d13.404954
   // std::make_pair("north", 52.510535),
   // std::make_pair("west", 13.323787),

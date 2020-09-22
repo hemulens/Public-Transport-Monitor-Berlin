@@ -19,8 +19,5 @@ int main() {
   graphics->SetVehicles(publicTransport.GetVehiclesPtr());
   graphics->Simulate(publicTransport);
 
-  // set timer
-  // std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-
   return 0;
 }
