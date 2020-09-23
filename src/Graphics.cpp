@@ -77,11 +77,10 @@ void Graphics::DrawVehicles() {
       } else if (v->GetVehicleType() == VehicleType::bus) {  // orange
         vehicleColor = cv::Scalar(0, 128, 255);  
         cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
-        // std::cout << "Drawing a bus " << v->GetVehicleType() << std::endl;
       } else if (v->GetVehicleType() == VehicleType::tram) {  // red
         vehicleColor = cv::Scalar(0, 0, 204);  
         cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
-      } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // blue
+      } else if (v->GetVehicleType() == VehicleType::subwayTrain) {  // light blue
         vehicleColor = cv::Scalar(255, 153, 51);  
         cv::circle(_images.at(1), cv::Point2d(longitude, latitude), 10, vehicleColor, -1);
       } else if (v->GetVehicleType() == VehicleType::suburbanTrain) {  // green
