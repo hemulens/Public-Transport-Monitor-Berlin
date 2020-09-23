@@ -1,8 +1,13 @@
 # Capstone Project (Udacity C++ Nanodegree)
 
-This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the Udacity C++ Nanodegree program in September 2020.
+This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the [Udacity C++ Nanodegree](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213) program in September 2020. The project is built out of curiosity to visualize realtime public transportation system in a densely-populated urban area. With ever-increasing urbanization rates globally, extended versions of this application can contribute to improving urban transportation systems, especially taking into account problems of energy supply, logistics and environmental concerns.
 
-![Screenshot of the project in action](misc/demo.jpg "Title")
+Possible application extensions can include:
+
+* Mapping the most dense and public transport routes – can be beneficial for GPS systems to re-route passenger vehicle / local logistics traffic to increase speed of commuting
+* Mapping traffic to track the most delay-prone time of the day for the public transport, etc.
+
+![Screenshot of the project in action](misc/demo.gif "Title")
 
 ## Project Description
 
@@ -21,7 +26,6 @@ According to the HAFAS/VBB [documentation](https://github.com/public-transport/h
 xxx
 
 ## File and Class Structure
-
 
 The README also indicates the file and class structure, along with the expected behavior or output of the program.
 
@@ -42,7 +46,7 @@ The README also indicates the file and class structure, along with the expected 
   * [Mac](https://docs.opencv.org/4.2.0/d0/db2/tutorial_macos_install.html)
   * [Linux](https://docs.opencv.org/4.2.0/d7/d9f/tutorial_linux_install.html)
   * [Windows](https://docs.opencv.org/4.2.0/d3/d52/tutorial_windows_install.html)
-* C++ REST SDK, formerly known as Casablanca ([GitHub page](https://github.com/Microsoft/cpprestsdk)). The library requires installation of development files for Boost and OpenSSL. Depending on your platform, please read detailed installation instructions for:
+* C++ REST SDK, formerly known as Casablanca ([GitHub page](https://github.com/Microsoft/cpprestsdk)). The library requires installation of development files for Boost and OpenSSL. Depending on your machine, please read detailed installation instructions for:
   * [Mac](https://github.com/Microsoft/cpprestsdk/wiki/How-to-build-for-Mac-OS-X)
   * [Linux](https://github.com/Microsoft/cpprestsdk/wiki/How-to-build-for-Linux)
   * [Windows](https://github.com/Microsoft/cpprestsdk/wiki/How-to-build-for-Windows)
@@ -57,7 +61,7 @@ After installing project dependencies, please proceed to build:
 4. Compile -> Step 2: `make`
 5. Run the application: `./BerlinTransport`
 
-## Rubric Points Addressed
+## Udacity Project Requirements – Rubric Points Addressed
 
 Below if the description of how Udacity project requirements are fulfilled.
 
