@@ -22,6 +22,7 @@ xxx
 
 ## File and Class Structure
 
+
 The README also indicates the file and class structure, along with the expected behavior or output of the program.
 
 ## Dependencies for Running Locally
@@ -58,48 +59,74 @@ After installing project dependencies, please proceed to build:
 
 ## Rubric Points Addressed
 
-The README indicates which rubric points are addressed. The README also indicates where in the code (i.e. files and line numbers) that the rubric points are addressed.
+Below if the description of how Udacity project requirements are fulfilled.
 
-### README (All Rubric Points REQUIRED)
+### 1. README (All Rubric Points REQUIRED)
 
-* A README with instructions is included with the project   --> Yes: `README.md` file included into the project root folder.
-* The README indicates which project is chosen --> Yes: see section "Project Description" in the `README.md` file.
-* The README includes information about each rubric point addressed --> Yes.
+* A README with instructions is included with the project
+  * Yes: `README.md` file included into the project root folder.
+* The README indicates which project is chosen
+  * Yes: see section "Project Description" in the `README.md` file.
+* The README includes information about each rubric point addressed
+  * Yes.
 
-### Compiling and Testing (All Rubric Points REQUIRED)
+### 2. Compiling and Testing (All Rubric Points REQUIRED)
 
-* The submission must compile and run --> Yes.
+* The submission must compile and run
+  * Yes.
 
-### Loops, Functions, I/O
+### 3. Loops, Functions, I/O
 
-* The project demonstrates an understanding of C++ functions and control structures --> Yes.
-* The project reads data from a file and process the data, or the program writes data to a file --> Yes & No: the project is designed to read and process data from a JSON stream received via the HTTP request (see `ApiData.h::52` and `ApiData.cpp::22`).
-* The project accepts user input and processes the input --> No.
+* The project demonstrates an understanding of C++ functions and control structures
+  * Yes.
+* The project reads data from a file and process the data, or the program writes data to a file
+  * Yes & No: the project is designed to read and process data from a JSON stream received via the HTTP request (see `ApiData.h::52` and `ApiData.cpp::22`).
+* The project accepts user input and processes the input
+  * No.
 
-### Object Oriented Programming
+### 4. Object Oriented Programming
 
-* The project uses Object Oriented Programming techniques --> Yes: please see `ApiData.h`, `Vehicle.h`, `PublicTransport.h`, and `Graphics.h`, as well as all respective `.cpp` files.
-* Classes use appropriate access specifiers for class members --> Yes.
-* Class constructors utilize member initialization lists --> Yes: please see e.g. constructor `Data::Data()` in `ApiData.cpp::5`, constructor `Vehicle::Vehicle()` in `Vehicle.cpp::71` and constructor `PublicTransport::PublicTransport()` in `PublicTransport.cpp::4`.
-* Classes abstract implementation details from their interfaces --> Yes.
-* Classes encapsulate behavior --> Yes: e.g. `Graphics::Simulate()` in `Graphics.h::23`, `PublicTransport::Run()` in `PublicTransport.h::18`, etc.
-* Classes follow an appropriate inheritance hierarchy --> No: no parent classes are implemented in this project.
-* Overloaded functions allow the same function to operate on different parameters --> Yes: overloading a template though "Template specializations"; please see `Vehicle.h::31` and `Vehicle.cpp::8`.
-* Derived class functions override virtual base class functions --> No: no virtual base classes implemented in the project.
-* Templates generalize functions in the project --> Yes: see `Vehicle.h::28` and `Vehicle.cpp::4`.
+* The project uses Object Oriented Programming techniques
+  * Yes: see `ApiData.h`, `Vehicle.h`, `PublicTransport.h`, and `Graphics.h`, as well as all respective `.cpp` files.
+* Classes use appropriate access specifiers for class members
+  * Yes.
+* Class constructors utilize member initialization lists
+  * Yes: please see e.g. constructor `Data::Data()` in `ApiData.cpp::5`, constructor `Vehicle::Vehicle()` in `Vehicle.cpp::71` and constructor `PublicTransport::PublicTransport()` in `PublicTransport.cpp::4`.
+* Classes abstract implementation details from their interfaces
+  * Yes.
+* Classes encapsulate behavior
+  * Yes: e.g. `Graphics::Simulate()` in `Graphics.h::23`, `PublicTransport::Run()` in `PublicTransport.h::18`, etc.
+* Classes follow an appropriate inheritance hierarchy
+  * No: no parent classes are implemented in this project.
+* Overloaded functions allow the same function to operate on different parameters
+  * Yes: overloading a template though "Template specializations"; please see `Vehicle.h::31` and `Vehicle.cpp::8`.
+* Derived class functions override virtual base class functions
+  * No: no virtual base classes implemented in the project.
+* Templates generalize functions in the project
+  * Yes: see `Vehicle.h::28` and `Vehicle.cpp::4`.
 
-### Memory Management
+### 5. Memory Management
 
-* The project makes use of references in function declarations --> Yes: see e.g. `void NormalizeLatitude(double &latitude)` and `void NormalizeLongitude(double &longitude)` in `Graphics.h::19` and `Graphics.h::20`.
-* The project uses destructors appropriately --> Yes: see e.g. `Vehicle::~Vehicle()` in `Vehicle.cpp::87`; no `free` or `delete` used, as the project uses smart pointers.
-* The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate --> Yes: see `std::shared_ptr<Data> _data` in `PublicTransport.h::20` and `std::vector<std::unique_ptr<Vehicle>> _vehicles` in `PublicTransport.h::23`.
-* The project follows the Rule of 5 --> No: smart pointers are used instead.
-* The project uses move semantics to move data, instead of copying it, where possible --> Yes: see `void Update(const web::json::value &&data)` in `ApiData.h::53`, `ApiData.cpp::47` and `ApiData.cpp::64`.
-* The project uses smart pointers instead of raw pointers --> Yes & No: smart pointers are used in `PublicTransport.h::20`, `PublicTransport.h::23`, but raw pointers are used for learning purposes in `Graphics.h::31`, `PublicTransport.h::21` and `PublicTransport.h::22`.
+* The project makes use of references in function declarations
+  * Yes: see e.g. `void NormalizeLatitude(double &latitude)` and `void NormalizeLongitude(double &longitude)` in `Graphics.h::19` and `Graphics.h::20`.
+* The project uses destructors appropriately
+  * Yes: see e.g. `Vehicle::~Vehicle()` in `Vehicle.cpp::87`; no `free` or `delete` used, as the project uses smart pointers.
+* The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate
+  * Yes: see `std::shared_ptr<Data> _data` in `PublicTransport.h::20` and `std::vector<std::unique_ptr<Vehicle>> _vehicles` in `PublicTransport.h::23`.
+* The project follows the Rule of 5
+  * No: smart pointers are used instead.
+* The project uses move semantics to move data, instead of copying it, where possible
+  * Yes: see `void Update(const web::json::value &&data)` in `ApiData.h::53`, `ApiData.cpp::47` and `ApiData.cpp::64`.
+* The project uses smart pointers instead of raw pointers
+  * Yes & No: smart pointers are used in `PublicTransport.h::20`, `PublicTransport.h::23`, but simple raw pointers (neither `malloc` nor `new`) are used for learning purposes in `Graphics.h::31`, `PublicTransport.h::21` and `PublicTransport.h::22`.
 
-### Concurrency
+### 6. Concurrency
 
-* The project uses multithreading --> No: a multithreading setup added to `Graphics::DrawVehicles()` in `Graphics.cpp::70`, but "linear" execution is chosen (`std::launch::deferred`). The dataset of 500+ vehicles is too small to run async.
-* A promise and future is used in the project --> Yes: see `Graphics::DrawVehicles()` in `Graphics.cpp::70`.
-* A mutex or lock is used in the project --> No.
-* A condition variable is used in the project --> No.
+* The project uses multithreading
+  * No: a multithreading setup added to `Graphics::DrawVehicles()` in `Graphics.cpp::70`, but "linear" execution is chosen (`std::launch::deferred`). The dataset of 500+ vehicles is too small to run async.
+* A promise and future is used in the project
+  * Yes: see `Graphics::DrawVehicles()` in `Graphics.cpp::70`.
+* A mutex or lock is used in the project
+  * No.
+* A condition variable is used in the project
+  * No.
