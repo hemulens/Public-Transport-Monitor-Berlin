@@ -39,7 +39,7 @@ void Graphics::Simulate(PublicTransport &transport) {
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
     std::cout << duration << " milliseconds – drawing vehicles" << std::endl;
     // sleep at every loop cycle (server returns real updates approx. once in 8-10 seconds)
-    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     std::cout << "*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n" << std::endl;
   }
 }

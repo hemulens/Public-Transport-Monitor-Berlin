@@ -18,16 +18,17 @@ void PublicTransport::Run() {
   _updated = 0;
   _created = 0;
   _deleted = 0;
-  // Update vehicles vector
+  // Update vehicles vector if vector is not empty
   if (_vehicles.size() > 0) {
     // Update or add vehicles
     for (int i = 0; i < _apiOutput->size(); ++i) {
       // // Internal TEST for debugging: count frequency to find repeated TripIDs (requires over 60 milliseconds on dataset i = 500)
+      // // Reason the test is needed – sometimes VBB server returns vehicles with duplicate IDs
       // int freq = std::count_if(_vehicles.begin(), _vehicles.end(), [this, i] (std::unique_ptr<Vehicle> &vehicle) {
       //   return vehicle->GetTripId() == (*this->_apiOutput)[i]["tripId"].as_string();
       // });
       // if (freq > 1) {
-      //   std::cout << "ERROR!!! FREQUENCY = " << freq << std::endl;
+      //   std::cout << "ERROR!!! FREQUENCY = " << freq << ". TripID = " << _vehicles[i]->GetTripId() << std::endl;
       // }
       // // EOF TEST
       // Find a vehicle with an ID of x
@@ -51,10 +52,10 @@ void PublicTransport::Run() {
       if (_vehicles[i]->GetUpdateTime() != *_updateTime) {
         _vehicles.erase(_vehicles.begin() + i);
         ++_deleted;
-        --i;
+        // i--;
       } 
     }
-  // Create vehicles and push to vector
+  // Create vehicles and push to vector if vector is empty
   } else {
     for (int i = 0; i < _apiOutput->size(); ++i) {
       _vehicles.emplace_back(std::make_unique<Vehicle>(*_updateTime, (*_apiOutput)[i]));

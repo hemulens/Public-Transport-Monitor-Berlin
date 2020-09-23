@@ -1,17 +1,20 @@
 # Capstone Project (Udacity C++ Nanodegree)
 
-This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the [Udacity C++ Nanodegree](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213) program in September 2020. The project is built out of curiosity to visualize realtime public transportation system in a densely-populated urban area. With ever-increasing urbanization rates globally, extended versions of this application can contribute to improving urban transportation systems, especially taking into account problems of energy supply, logistics and environmental concerns.
+This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the [Udacity C++ Nanodegree](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213) program in September 2020. The project is built out of curiosity to visualize realtime public transportation system in a densely-populated urban area. With the ever-increasing pace of urbanization globally, extended versions of similar applications can contribute to improving urban transportation systems, especially taking into account problems of energy supply, logistics and environmental concerns.
 
 Possible application extensions can include:
 
 * Mapping the most dense and public transport routes – can be beneficial for GPS systems to re-route passenger vehicle / local logistics traffic to increase speed of commuting
-* Mapping traffic to track the most delay-prone time of the day for the public transport, etc.
+* Mapping traffic to track the most delay-prone time of the day for the local public transport, as well as mappring jammed urban areas
+* Etc.
 
 ![Screenshot of the project in action](misc/demo.gif "Title")
 
-## Project Description
+## Project Description – Berlin Realtime Public Transport Monitor
 
-The aim of the project is to display and track all public transport units operating at the current time in Berlin, Germany. The project uses data from the API [provided](https://github.com/public-transport/hafas-client/blob/5/docs/radar.md) by the Transportation Union of Berlin and Brandedburg (Verkehrsverbund Berlin-Brandenburg, VBB) and HAFAS to track realtime geographic locations of all types of public transport vehicles at a given part of the map. The transport units include:
+The goal of the project is to track, map and display all public transport units operating at the current time in Berlin, Germany. The project uses data from the API [provided](https://github.com/public-transport/hafas-client/blob/5/docs/radar.md) by the Transportation Union of Berlin and Brandedburg (Verkehrsverbund Berlin-Brandenburg, VBB) and HAFAS ([company website](https://www.hacon.de/en/solutions/trip-planner-and-travel-companion/), [about HAFAS in Wikipedia](https://de.wikipedia.org/wiki/HAFAS)) to track realtime geographic locations of all types of public transport vehicles at a given part of the map. The documentation to the API used in this project is written by [Jannis Redmann (aka derhuerst)](https://github.com/derhuerst).
+
+The transport units include:
 
 * Buses           (orange)
 * Trams           (red)
@@ -21,13 +24,29 @@ The aim of the project is to display and track all public transport units operat
 * Regional trains (purple)
 * Ferries         (brown, larger blob)
 
-According to the HAFAS/VBB [documentation](https://github.com/public-transport/hafas-client/blob/5/docs/radar.md), the API allows a user to send up to 100 requests per minute; in practice, however, it returns real updates approximately every 7-10 seconds.
+According to the [documentation](https://github.com/public-transport/hafas-client/blob/5/docs/radar.md) written by [Jannis Redmann](https://github.com/derhuerst), the API allows a user to send up to 100 requests per minute. This works nominally, but in practice the VBB's server sends real updates approximately every 8-12 seconds, therefore vehicle positions will update every 8-12 seconds.
 
-xxx
+## Project Structure and Logic
 
-## File and Class Structure
+`Controller.cpp` is the main file controlling the application. The application's logic is described below:
 
-The README also indicates the file and class structure, along with the expected behavior or output of the program.
+1. Set up graphics via creating an instance of `Graphics` class on the heap (required by OpenCV) based on pre-set map coordinates corresponding to map images from Google Maps. 4 maps and coordinate sets are available in the folder `Data` and in the map `geo` in `ApiData.h::23` (instructions below)
+    * Create a map background using a map image. Map images are stored in the folder "Data"
+    * Set the respective image resolution to allow presisely normalizing vehicle positions later on (convert from latitude and longitude into X and Y coordinates on the map image)
+    * To choose a different map set, please comment out / uncomment respective map coordinate sets in `std::map<...> geo` in the file `ApiData.h` and choose an appropriate map image name and image resolution in `Controller.cpp` The map images are stored in the folder "Data". For instance, the image for experimental set 2 is "berlin-md-2.jpg"
+1. Create a PublicTransport object. The object will contain:
+    * Data object (owned) – created with the separate class `Data`
+    * Vector of all vehicles on the map – created with the separate class `Vehicle`
+    * Method `PublicTransport::Run()` responsible for:
+        * Fetching, processing and storing public transport data at a given location in Berlin via the HTTP request through the class `Data`
+        * Managing the vehicle fleet once the `Data` class updated its `_data`. This includes:
+            * Creating, deleting and updating vehicles
+1. Allow the instance of `Graphics` accessing array of `Vehicle`s stored in the `PublicTransport` object
+1. Run simulation which includes `PublicTransport::Run()` and `Graphics::DrawVehicles()` running in an infinite loop
+
+### Expected Behavior
+
+After the application is launched, a window with map should be displayed, where vehicles are displayed. The vehicles' positions should update approx. every 8-12 seconds, whereas HTTP requests should be send every 3-5 seconds. The VBB server allows sending up to 100 HTTP requests per minute, but the real data on the server renews every 8-12 seconds only, hence the long update time.
 
 ## Dependencies for Running Locally
 
@@ -56,14 +75,14 @@ The README also indicates the file and class structure, along with the expected 
 After installing project dependencies, please proceed to build:
 
 1. Clone this repository into your project folder
-2. Make a build directory in the top level directory: `mkdir build && cd build`
-3. Compile -> Step 1: `cmake ..` (should you have hard times linking the OpenSSL library, please tell cmake where OpenSSL files are located on your machine. Make sure to do it prior to calling `cmake ..`. Example for Mac: `export OPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@1.1/1.1.1g/` and `export OPENSSL_INCLUDE_DIR=/usr/local/Cellar/openssl@1.1/1.1.1g/include/`)
-4. Compile -> Step 2: `make`
-5. Run the application: `./BerlinTransport`
+1. Make a build directory in the top level directory: `mkdir build && cd build`
+1. Compile -> Step 1: `cmake ..` (should you have hard times linking the OpenSSL library, please tell cmake where OpenSSL files are located on your machine. Make sure to do it prior to calling `cmake ..`. Example for Mac: `export OPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@1.1/1.1.1g/` and `export OPENSSL_INCLUDE_DIR=/usr/local/Cellar/openssl@1.1/1.1.1g/include/`)
+1. Compile -> Step 2: `make`
+1. Run the application: `./BerlinTransport`
 
-## Udacity Project Requirements – Rubric Points Addressed
+## Udacity Capstone Project Requirements – Rubric Points Addressed
 
-Below if the description of how Udacity project requirements are fulfilled.
+Below is the description of how Udacity project requirements are fulfilled.
 
 ### 1. README (All Rubric Points REQUIRED)
 

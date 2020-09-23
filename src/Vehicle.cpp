@@ -75,7 +75,7 @@ Vehicle::Vehicle() : _type(VehicleType::null),
   // std::cout << "Vehicle " << _id << " created" << std::endl;
 }
 
-Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) : _updatedAt(time) {
+Vehicle::Vehicle(std::chrono::high_resolution_clock::time_point time, web::json::value data) {
   // Set variables
   this->Update(time, data);
   // Update counter
