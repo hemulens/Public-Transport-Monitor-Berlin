@@ -1,6 +1,8 @@
 # Capstone Project (Udacity C++ Nanodegree)
 
-This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the [Udacity C++ Nanodegree](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213) program in September 2020. The project is built out of curiosity to visualize realtime public transportation system in a densely-populated urban area. With the ever-increasing pace of urbanization globally, extended versions of similar applications can contribute to improving urban transportation systems, especially taking into account problems of energy supply, logistics and environmental concerns.
+This is the description of and the instruction for running the Berlin Realtime Public Transport Monitor designed by Sergei Kononov as a Capstone Project in the [Udacity C++ Nanodegree](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213) program in September 2020. 
+
+The project is built out of curiosity to visualize realtime public transportation system in a densely-populated urban area. With the ever-increasing pace of urbanization globally, extended versions of similar applications can contribute to improving urban transportation systems, especially taking into account problems of energy supply, logistics and environmental concerns.
 
 Possible application extensions can include:
 
